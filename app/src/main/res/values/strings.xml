@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Tarea3smr</string>
+    <string name="eliminar_pokemon">Permitir eliminar Pokémons</string>
+    <string name="elim_pokemon_title_opciones">Eliminar Pokémons capturados</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="idioma_titulo_ajustes">Idioma</string>
+</resources>

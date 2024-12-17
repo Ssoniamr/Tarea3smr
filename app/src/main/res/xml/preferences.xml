@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory android:title="@string/ajustes">
+
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="eliminar_pokemon"
+        android:title="@string/elim_pokemon_title_opciones"
+        app:icon="@drawable/eliminar_pokemon"
+        app:summary="@string/eliminar_pokemon" />
+    </PreferenceCategory>
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/idiomas_disponibles"
+        android:entryValues="@array/valor_idiomas_disponibles"
+        android:key="elegir_idioma"
+        android:title="@string/idioma_titulo_ajustes"
+        app:dialogIcon="@drawable/flecha_derecha"
+        app:icon="@drawable/idioma"
+        app:summary="elige un idioma" />
+</PreferenceScreen>
