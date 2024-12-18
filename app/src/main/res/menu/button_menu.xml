@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/fragment_pokemons_capturados"
+        android:icon="@drawable/pokemonscaptura"
+        android:title="@string/mis_pok_mons"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/fragment_lista_pokemons_disponibles"
+        android:icon="@drawable/lista"
+        android:title="@string/pok_dex"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/preferences_ajustes"
+        android:icon="@drawable/ajustes"
+        android:title="@string/ajuste_button_menu"
+        app:showAsAction="always" />
+</menu>

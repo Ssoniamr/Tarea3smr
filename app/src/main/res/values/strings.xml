@@ -4,4 +4,9 @@
     <string name="elim_pokemon_title_opciones">Eliminar Pokémons capturados</string>
     <string name="ajustes">Ajustes</string>
     <string name="idioma_titulo_ajustes">Idioma</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mis_pok_mons">Mis Pokémons</string>
+    <string name="pok_dex">Pokédex</string>
+    <string name="ajuste_button_menu">Ajustes</string>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_lista_pokemons_capturados">
+
+    <fragment
+        android:id="@+id/preferenceAjustes"
+        android:name="dam.pmdm.tarea3smr.PreferenceAjustes"
+        android:label="PreferenceAjustes" />
+    <fragment
+        android:id="@+id/fragment_lista_pokemons_capturados"
+        android:name="dam.pmdm.tarea3smr.ListaPokemosCapturados"
+        android:label="fragment_lista_pokemons_capturados"
+        tools:layout="@layout/fragment_lista_pokemons_capturados" />
+    <fragment
+        android:id="@+id/fragment_lista_pokemons_disponibles"
+        android:name="dam.pmdm.tarea3smr.ListaPokemonsDisponibles"
+        android:label="fragment_lista_pokemons_disponibles"
+        tools:layout="@layout/fragment_lista_pokemons_disponibles" />
+</navigation>
