@@ -20,6 +20,7 @@
         android:entryValues="@array/valor_idiomas_disponibles"
         android:key="elegir_idioma"
         android:title="@string/idioma_titulo_ajustes"
+        app:allowDividerAbove="true"
         app:dialogIcon="@drawable/flecha_derecha"
         app:icon="@drawable/idioma"
         app:summary="elige un idioma" />

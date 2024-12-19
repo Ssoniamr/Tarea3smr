@@ -13,10 +13,19 @@
         android:id="@+id/fragment_lista_pokemons_capturados"
         android:name="dam.pmdm.tarea3smr.ListaPokemosCapturados"
         android:label="fragment_lista_pokemons_capturados"
-        tools:layout="@layout/fragment_lista_pokemons_capturados" />
+        tools:layout="@layout/fragment_lista_pokemons_capturados" >
+        <action
+            android:id="@+id/action_fragment_lista_pokemons_capturados_to_pkemonsDetailFragment"
+            app:destination="@id/pkemonsDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_lista_pokemons_disponibles"
         android:name="dam.pmdm.tarea3smr.ListaPokemonsDisponibles"
         android:label="fragment_lista_pokemons_disponibles"
         tools:layout="@layout/fragment_lista_pokemons_disponibles" />
+    <fragment
+        android:id="@+id/pkemonsDetailFragment"
+        android:name="dam.pmdm.tarea3smr.PkemonsDetailFragment"
+        android:label="fragment_pkemons_detail"
+        tools:layout="@layout/fragment_pkemons_detail" />
 </navigation>

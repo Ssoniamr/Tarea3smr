@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--estilo para el carView (dia)-->
+    <style name="StyleCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">18dp</item>
+        <item name="cardElevation">16dp</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="cardBackgroundColor">@color/amarillo</item>
+    </style>
+
+    <!--estilo para imagen de personaje del carView (comun)-->
+    <style name="StyleImageCardView">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">25dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <!--estilo texto del carView (comun)-->
+    <style name="StyleTextCardView">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/ketchum</item>
+    </style>
+</resources>
