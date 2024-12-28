@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/fragment_pokemons_capturados"
+        android:id="@+id/fragment_lista_pokemons_capturados"
         android:icon="@drawable/pokemonscaptura"
         android:title="@string/mis_pok_mons"
         app:showAsAction="always" />

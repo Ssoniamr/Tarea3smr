@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(R.id.nav_host_fragment);
 
-        //si este no es nulo obetemos el controlador de navegacion y lo conectamos con el navigationButton
+        //si este no es nulo, obetemos el controlador de navegacion y lo conectamos con el navigationButton
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.navigationButton, navController);

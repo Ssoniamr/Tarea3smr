@@ -9,4 +9,18 @@
     <string name="mis_pok_mons">Mis Pokémons</string>
     <string name="pok_dex">Pokédex</string>
     <string name="ajuste_button_menu">Ajustes</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
+    <string name="cerrar_y_salir_de_la_aplicaci_n">cerrar y salir de la aplicación</string>
+    <string name="no">no</string>
+    <string name="si">si</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
 </resources>

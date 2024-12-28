@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/preferenceAjustes">
+    android:id="@+id/preferenceAjustes"
+    app:icon="@drawable/cerrar_sesion">
 
 
     <PreferenceCategory android:title="@string/ajustes">
 
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="eliminar_pokemon"
-        android:title="@string/elim_pokemon_title_opciones"
-        app:icon="@drawable/eliminar_pokemon"
-        app:summary="@string/eliminar_pokemon" />
-    </PreferenceCategory>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="eliminar_pokemon"
+            android:title="@string/elim_pokemon_title_opciones"
+            app:icon="@drawable/eliminar_pokemon"
+            app:summary="@string/eliminar_pokemon" />
+
     <ListPreference
         android:defaultValue="1"
         android:entries="@array/idiomas_disponibles"
@@ -24,4 +25,16 @@
         app:dialogIcon="@drawable/flecha_derecha"
         app:icon="@drawable/idioma"
         app:summary="elige un idioma" />
+
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/opciones_salir"
+            android:entryValues="@array/valor_opciones_salir"
+            android:key="Cerrar_sesion"
+            android:title="@string/cerrar_sesion"
+            app:allowDividerAbove="true"
+            app:icon="@drawable/cerrar_sesion"
+            app:summary="" />
+
+    </PreferenceCategory>
 </PreferenceScreen>
