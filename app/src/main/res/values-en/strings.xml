@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Task3smr</string>
+    <string name="eliminar_pokemon">Allow to delete Pokémon</string>
+    <string name="elim_pokemon_title_opciones">Delete captured Pokémon</string>
+    <string name="ajustes">Settings</string>
+    <string name="idioma_titulo_ajustes">Language</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mis_pok_mons">My Pokémon</string>
+    <string name="pok_dex">Pokédex</string>
+    <string name="ajuste_button_menu">Settings</string>
+    <string name="cerrar_sesi_n">Log out</string>
+    <string name="cerrar_y_salir_de_la_aplicaci_n">close and exit the application</string>
+    <string name="no">no</string>
+    <string name="si">yes</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="cerrar_sesion">Log out</string>
+    <string name="acerca_de">About...</string>
+    <string name="infromacion_desarrollador">application developed by Sonia Muñoz Romero. Version 1.0</string>
+    <string name="elige_un_idioma">choose a language</string>
+    <string name="info_app">more information about the application</string>
+    <string name="confirmar_cierre">Are you sure you want to log out?</string>
+    <string name="toastCierre">You have successfully logged out</string>
+    <string name="error_al_iniciar_sesi_n">Error logging in</string>
+    <string name="bienvenido">"Welcome "</string>
+
+</resources>

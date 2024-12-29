@@ -4,7 +4,6 @@
     <string name="elim_pokemon_title_opciones">Eliminar Pokémons capturados</string>
     <string name="ajustes">Ajustes</string>
     <string name="idioma_titulo_ajustes">Idioma</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mis_pok_mons">Mis Pokémons</string>
     <string name="pok_dex">Pokédex</string>
@@ -27,4 +26,8 @@
     <string name="infromacion_desarrollador">aplicación desarrollada por Sonia Muñoz Romero. Versión 1.0</string>
     <string name="elige_un_idioma">elige un idioma</string>
     <string name="info_app">más información sobre la aplicación</string>
+    <string name="confirmar_cierre">¿Estás seguro de que quieres cerrar sesión?</string>
+    <string name="toastCierre">Se ha cerrado sesión correctamente</string>
+    <string name="error_al_iniciar_sesi_n">Error al iniciar sesión</string>
+    <string name="bienvenido">"Bienvenido "</string>
 </resources>

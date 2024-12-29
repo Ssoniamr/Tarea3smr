@@ -38,6 +38,8 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         acercaDe = findPreference("acerca_de");
         cerrarSesion = findPreference("cerrar_sesion");
         idiomaList = findPreference("elegir_idioma");
+        preferenceCategory = findPreference("preference_category");
+        eliminarPokemonPreference = findPreference("eliminar_pokemon");
 
         acercaDe.setOnPreferenceClickListener(this::onClick);
         cerrarSesion.setOnPreferenceClickListener(this::onClick);
@@ -64,7 +66,7 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
             }else if(preference.getKey().equals("cerrar_sesion")) {
                 new AlertDialog.Builder(getContext())
                         .setTitle(R.string.cerrar_sesi_n)
-                        .setMessage("¿Estás seguro de que quieres cerrar sesión?")
+                        .setMessage(R.string.confirmar_cierre)
                         .setPositiveButton("Sí", (dialog, which) -> {
                             if (getActivity() != null) {
                                 ((MainActivity) getActivity()).cerrarSesion();
@@ -85,6 +87,8 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         preferenceCategory.setTitle(R.string.ajustes);
         idiomaList.setTitle(R.string.idioma_titulo_ajustes);
         idiomaList.setSummary(R.string.elige_un_idioma);
+        eliminarPokemonPreference.setTitle(R.string.eliminar_pokemon);
+        eliminarPokemonPreference.setSummary(R.string.elim_pokemon_title_opciones);
         acercaDe.setTitle(R.string.acerca_de);
         acercaDe.setSummary(R.string.info_app);
         cerrarSesion.setTitle(R.string.cerrar_sesi_n);

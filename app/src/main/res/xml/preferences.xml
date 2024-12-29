@@ -5,7 +5,9 @@
     app:icon="@drawable/cerrar_sesion">
 
 
-    <PreferenceCategory android:title="@string/ajustes">
+    <PreferenceCategory
+        android:key="preference_category"
+        android:title="@string/ajustes">
 
 
         <SwitchPreference

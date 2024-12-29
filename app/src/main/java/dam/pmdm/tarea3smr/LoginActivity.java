@@ -27,7 +27,6 @@ import dam.pmdm.tarea3smr.databinding.ActivityMainBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
-
     /**
      * Called when the activity is first created.
      * @param savedInstanceState If the activity is being re-initialized after
@@ -102,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             goToMainActivity();
         } else {
-            Toast.makeText(this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_al_iniciar_sesi_n), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -113,8 +112,13 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null) {
-            Toast.makeText(this, "Bienvenido " + user, Toast.LENGTH_SHORT).show();
+        String userName = null;
+        if (user != null) {
+            userName = user.getDisplayName();
+        }
+        if(userName!=null) {
+            String mensaje = getString(R.string.bienvenido) + userName;
+            Toast.makeText(this,mensaje , Toast.LENGTH_SHORT).show();
         }
         finish();
     }

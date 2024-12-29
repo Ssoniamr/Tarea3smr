@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(MainActivity.this, "Se ha cerrado sesión correctamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.toastCierre), Toast.LENGTH_SHORT).show();
                         irALogin();
                     }
                 });
