@@ -24,17 +24,18 @@
         app:allowDividerAbove="true"
         app:dialogIcon="@drawable/flecha_derecha"
         app:icon="@drawable/idioma"
-        app:summary="elige un idioma" />
+        app:summary="@string/elige_un_idioma" />
 
-        <ListPreference
-            android:defaultValue="2"
-            android:entries="@array/opciones_salir"
-            android:entryValues="@array/valor_opciones_salir"
-            android:key="Cerrar_sesion"
+        <Preference
+            android:key="acerca_de"
+            android:title="@string/acerca_de"
+            android:summary="@string/info_app"
+            app:icon="@drawable/informacion" />
+
+        <Preference
+            android:key="cerrar_sesion"
             android:title="@string/cerrar_sesion"
-            app:allowDividerAbove="true"
-            app:icon="@drawable/cerrar_sesion"
-            app:summary="" />
+            app:icon="@drawable/cerrar_sesion" />
 
     </PreferenceCategory>
 </PreferenceScreen>

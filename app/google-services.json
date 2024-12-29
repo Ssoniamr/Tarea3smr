@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "240943485279",
+    "project_id": "tarea3-bdce3",
+    "storage_bucket": "tarea3-bdce3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240943485279:android:a5576445b5829b16d566ea",
+        "android_client_info": {
+          "package_name": "dam.pmdm.tarea3smr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240943485279-kpi8bn3tkj58vjddefhamlg8i5l81qqg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dam.pmdm.tarea3smr",
+            "certificate_hash": "c4c56764eefbcd2bef51cabb5cef88d7e7557f18"
+          }
+        },
+        {
+          "client_id": "240943485279-i9lr3d54v7emi556opt7c5h8a5lof52l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB65ifNP6L1xcfNZNSZSeFVDy4wKpK4QSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240943485279-i9lr3d54v7emi556opt7c5h8a5lof52l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

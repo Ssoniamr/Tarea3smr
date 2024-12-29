@@ -7,18 +7,7 @@
     </string-array>
 
     <string-array name="valor_idiomas_disponibles">
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
-    <!--opciones para cerrar sesión-->
-    <string-array name="opciones_salir">
-        <item>Si</item>
-        <item>No</item>
-    </string-array>
-
-    <string-array name="valor_opciones_salir">
-        <item>1</item>
-        <item>2</item>
+        <item>es</item>
+        <item>en</item>
     </string-array>
 </resources>

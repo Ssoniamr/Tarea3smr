@@ -27,7 +27,6 @@ import dam.pmdm.tarea3smr.databinding.ActivityMainBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ActivityLogingBinding binding;
 
     /**
      * Called when the activity is first created.
@@ -40,10 +39,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_loging);
-
-        binding = ActivityLogingBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
     }
 
@@ -69,14 +64,14 @@ public class LoginActivity extends AppCompatActivity {
     private void startSignIn() {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build());
-               // new AuthUI.IdpConfig.GoogleBuilder().build());
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
 
 // Create and launch sign-in intent
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                .setLogo(R.mipmap.poke_ball)
+                .setLogo(R.drawable.pke_ball)
                 .setTheme(R.style.Base_Theme_Tarea3smr)
                 .build();
         signInLauncher.launch(signInIntent);
@@ -117,6 +112,10 @@ public class LoginActivity extends AppCompatActivity {
     private void goToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null) {
+            Toast.makeText(this, "Bienvenido " + user, Toast.LENGTH_SHORT).show();
+        }
         finish();
     }
 }

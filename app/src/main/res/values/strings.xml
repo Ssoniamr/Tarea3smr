@@ -23,4 +23,8 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="acerca_de">Acerca de...</string>
+    <string name="infromacion_desarrollador">aplicación desarrollada por Sonia Muñoz Romero. Versión 1.0</string>
+    <string name="elige_un_idioma">elige un idioma</string>
+    <string name="info_app">más información sobre la aplicación</string>
 </resources>

@@ -1,11 +1,19 @@
 package dam.pmdm.tarea3smr;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -21,6 +29,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
+import java.util.Locale;
+
 import dam.pmdm.tarea3smr.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private NavHostFragment navHostFragment;
     private NavController navController;
     private SharedPreferences sharedPreferences;
+    private String idioma;
 
     /**
      * metodo en el que se configura lo necesario para poder inicar la activity, la interfaz de
@@ -61,13 +72,25 @@ public class MainActivity extends AppCompatActivity {
 
         preferenciasGuardadas();
 
+
     }
 
+
+    /**
+     * Metodo que recupera las preferencias guardadas e invoca el metodo {@link #changeLanguage(String)}
+     * para cambiar el idioma de la app.
+     * (es invocado cada vez que se lanza la MainActivity).
+     */
     private void preferenciasGuardadas() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //obtenemos el idioma guardado
+        idioma = sharedPreferences.getString("elegir_idioma", "es");
+        changeLanguage(idioma);
+        //obtenemos la preferencia guardada para eliminar pokemons.
+        if (sharedPreferences.getBoolean("eliminar_pokemon", false)) {
 
+        }
     }
-
 
     /**
      * Método que indica a donde navegar segun el item seleccionado del buttonNavigation
@@ -107,6 +130,58 @@ public class MainActivity extends AppCompatActivity {
 
         Navigation.findNavController(view).navigate(R.id.pkemonsDetailFragment, bundle);
 
+    }
+
+    public  void cerrarSesion(){
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(MainActivity.this, "Se ha cerrado sesión correctamente", Toast.LENGTH_SHORT).show();
+                        irALogin();
+                    }
+                });
+    }
+
+    private void irALogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+    /**
+     * Método para modificar el idioma de la aplicación.
+     * utiliza la configuracion del sistmea y actualiza la app. invocando los metodos
+     * {@link #invalidateOptionsMenu()} y {@link #refreshNavigationMenu()}.
+     *
+     * @param language indica el código del idioma al que se desea cambiar.
+     */
+    public void changeLanguage(String language) {
+        try {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+
+            Configuration configuration = new Configuration();
+            configuration.setLocale(locale);
+            getResources().updateConfiguration(configuration, getResources().getDisplayMetrics());
+        } catch (Exception e) {
+            System.out.println("no pudo trabajar con locale" + e);
+        }
+
+        //llama a los metodos para actualizar el resto de la app
+        invalidateOptionsMenu();
+        refreshNavigationMenu();
+    }
+
+    /**
+     * metodo para actualizar el menu lateral
+     * (se invoca cada vez que se produce un cambio de idioma)
+     */
+    public void refreshNavigationMenu() {
+        Menu menu = binding.navigationButton.getMenu();
+        menu.clear();
+        binding.navigationButton.inflateMenu(R.menu.button_menu);
     }
 
 }
