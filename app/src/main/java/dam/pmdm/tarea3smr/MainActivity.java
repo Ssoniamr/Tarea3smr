@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.speech.RecognitionService;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ import androidx.preference.PreferenceManager;
 import java.util.Locale;
 
 import dam.pmdm.tarea3smr.databinding.ActivityMainBinding;
+import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("peso", pokemon.getPeso());
 
         Navigation.findNavController(view).navigate(R.id.pkemonsDetailFragment, bundle);
+
+    }
+
+     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon, View view){
+
 
     }
 

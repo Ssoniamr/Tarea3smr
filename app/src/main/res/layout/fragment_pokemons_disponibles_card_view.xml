@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".PokemonsDisponiblesCardView">
+
+    <TextView
+        style="@style/StyleTextCardView"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:textSize="40sp"
+        android:textColor="@color/Azul_oscuro"
+        android:id="@+id/nombre_pokemon_disponible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre Pokémon disponible" />
+
+</FrameLayout>

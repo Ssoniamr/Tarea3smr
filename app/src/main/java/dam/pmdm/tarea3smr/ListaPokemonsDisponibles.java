@@ -2,63 +2,64 @@ package dam.pmdm.tarea3smr;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListaPokemonsDisponibles#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+import dam.pmdm.tarea3smr.responses.ResponseListaPokemons;
+import dam.pmdm.tarea3smr.databinding.FragmentListaPokemonsDisponiblesBinding;
+import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ListaPokemonsDisponibles extends Fragment {
+    private FragmentListaPokemonsDisponiblesBinding binding;
+    private PokemonsDisponiblesRecyclerviewAdapter adapter;
+    private ArrayList<ResponseUnPokemonList> listaPokemonsDisponibles = new ArrayList<>();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ListaPokemonsDisponibles() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaPokemonsDisponibles.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ListaPokemonsDisponibles newInstance(String param1, String param2) {
-        ListaPokemonsDisponibles fragment = new ListaPokemonsDisponibles();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentListaPokemonsDisponiblesBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lista_pokemons_disponibles, container, false);
+    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adapter = new PokemonsDisponiblesRecyclerviewAdapter(listaPokemonsDisponibles, getActivity());
+        binding.pokemonsDisponiblesRecyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.pokemonsDisponiblesRecyclerview.setAdapter(adapter);
+
+        ApiInterface apiService = ApiAdaptador.getApiService();
+        apiService.getPokemonsList(0, 150).enqueue(new Callback<ResponseListaPokemons>() {
+            @Override
+            public void onResponse(Call<ResponseListaPokemons> call, Response<ResponseListaPokemons> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("API Response", "Response Body: " + response.body().toString());
+                    List<ResponseUnPokemonList> pokemonLists = response.body().getUnPokemonLists();
+                        listaPokemonsDisponibles.addAll(pokemonLists);
+                    adapter.notifyDataSetChanged();
+                }else{
+                    Log.e("API Error", "Response unsuccessful or body is null");
+                }
+            }
+            @Override public void onFailure(Call<ResponseListaPokemons> call, Throwable t) {
+
+                Log.e("API error", "no se pudo obtener la lista");
+                }
+        });
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView(); binding = null;
     }
 }
