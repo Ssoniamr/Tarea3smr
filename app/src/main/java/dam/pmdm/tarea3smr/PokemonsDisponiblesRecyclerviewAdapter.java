@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,13 +65,14 @@ public class PokemonsDisponiblesRecyclerviewAdapter  extends  RecyclerView.Adapt
 
     /**
      * Método que maneja el evento clic sobre el item, indica hacia donde navegar llamando al metodo
-     * {@link MainActivity#pokemonDisponiblesClicked(ResponseUnPokemonList, View)}
+     * {@link MainActivity#pokemonDisponiblesClicked(ResponseUnPokemonList)}
      *
      * @param pokemonActual indica el objeto PokemonData actual.
      * @param view          indica la vista del item que se clicó.
      */
     private void itemcliked(ResponseUnPokemonList pokemonActual, View view) {
-        ((MainActivity) context).pokemonDisponiblesClicked(pokemonActual, view);
+        ((MainActivity) context).pokemonDisponiblesClicked(pokemonActual);
+        Toast.makeText(context,"Has capturado a " + pokemonActual.getName(),Toast.LENGTH_SHORT).show();
     }
 
     /**

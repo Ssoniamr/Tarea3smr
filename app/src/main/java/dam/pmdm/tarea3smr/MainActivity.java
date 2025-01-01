@@ -30,9 +30,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
+import java.util.List;
 import java.util.Locale;
 
 import dam.pmdm.tarea3smr.databinding.ActivityMainBinding;
+import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
+import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
 import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 
 public class MainActivity extends AppCompatActivity {
@@ -122,22 +125,41 @@ public class MainActivity extends AppCompatActivity {
      * @param pokemon indica el objeto de tipo PokemonData que contiene la información del pokemon que se selecciono.
      * @param view inidca la vistas, es decir, el item del RecyclerView que se seleccioná.
      */
-    public void pokemonCapturadoClicked(PokemonData pokemon, View view){
+    public void pokemonCapturadoClicked(ResponseDetallePokemon pokemon, View view){
+        String tipos = obtenerTipos(pokemon);
+
         Bundle bundle = new Bundle();
-        bundle.putInt("imagen", pokemon.getImagenPokemonDetalle());
-        bundle.putString("name", pokemon.getNombre());
-        bundle.putInt("indice", pokemon.getIndice());
-        bundle.putString("altura", pokemon.getAltura());
-        bundle.putString("peso", pokemon.getPeso());
+        bundle.putString("imagenUrl", pokemon.getSprite());
+        bundle.putString("name", pokemon.getName());
+        bundle.putLong("indice", pokemon.getId());
+        bundle.putString("tipos", tipos.toString());
+        bundle.putLong("peso", pokemon.getWeight());
+        bundle.putLong("altura", pokemon.getHeight());
 
         Navigation.findNavController(view).navigate(R.id.pkemonsDetailFragment, bundle);
 
     }
 
-     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon, View view){
-
+    public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon){
 
     }
+
+    public static String obtenerTipos(ResponseDetallePokemon pokemon) {
+        // Obtenemos la lista de tipos
+        List<ResponseTipoPokemon> listaTipos = pokemon.getTypes();
+        StringBuilder tipos = new StringBuilder();
+
+        // Construimos la cadena de tipos separados por comas
+        for (ResponseTipoPokemon tipo : listaTipos) {
+            tipos.append(tipo.getName()).append(", ");
+        }
+        // Eliminamos la última coma y espacio si existe
+        if (tipos.length() > 0) {
+            tipos.setLength(tipos.length() - 2);
+        }
+        return tipos.toString();
+    }
+
 
     public  void cerrarSesion(){
         AuthUI.getInstance()

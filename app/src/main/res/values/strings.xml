@@ -30,4 +30,13 @@
     <string name="toastCierre">Se ha cerrado sesión correctamente</string>
     <string name="error_al_iniciar_sesi_n">Error al iniciar sesión</string>
     <string name="bienvenido">"Bienvenido "</string>
+    <string name="imagen_del_pokemon">imagen del pokemon</string>
+    <string name="nombre_pokemon">nombre pokemon</string>
+    <string name="indice_del_pokemon">indice del pokemon</string>
+    <string name="peso_del_pokemon">peso del pokemon</string>
+    <string name="altura_pokemon">altura pokemon</string>
+    <string name="tipo_o_tipos_del_pokemon">tipo o tipos del pokemon</string>
+    <string name="has_seleccionado_a">"has seleccionado a "</string>
+    <string name="nombre_pok_mon_capturado">Nombre Pokémon capturado</string>
+    <string name="tipo_pok_mon_capturado">tipo Pokémon capturado</string>
 </resources>

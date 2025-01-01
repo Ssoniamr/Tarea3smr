@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".PokemonsCapturadosCardview">
 
-    <data>
-        <variable
-            name="pokemon_capturado"
-            type="dam.pmdm.tarea3smr.PokemonData" />
-    </data>
 
 <androidx.cardview.widget.CardView
     style="@style/StyleCardView"
@@ -34,15 +29,27 @@
             />
 
         <TextView
-            style="@style/StyleTextCardView"
             android:id="@+id/nombre_pokemon_capturado"
+            style="@style/StyleTextCardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre Pokémon capturado"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/nombre_pok_mon_capturado"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/imagen_pokemon_capturado"/>
+            app:layout_constraintStart_toEndOf="@id/imagen_pokemon_capturado"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <TextView
+            android:id="@+id/tipo_pokemon_capturado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_pok_mon_capturado"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imagen_pokemon_capturado"
+            app:layout_constraintTop_toBottomOf="@id/nombre_pokemon_capturado"
+            app:layout_constraintVertical_bias="0.26" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
 

@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import dam.pmdm.tarea3smr.databinding.FragmentListaPokemonsCapturadosBinding;
+import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
 
 /**
  * Clase que crea el fragment de la lista de pokemons capturados.
@@ -24,7 +25,7 @@ import dam.pmdm.tarea3smr.databinding.FragmentListaPokemonsCapturadosBinding;
 public class ListaPokemosCapturados extends Fragment {
 
     private FragmentListaPokemonsCapturadosBinding binding;
-    private ArrayList<PokemonData> pokemonCapturado;
+    private ArrayList<ResponseDetallePokemon> pokemonCapturado;
     private PokemonCapturadoRecyclerViewAdapter adapter;
 
     /**
@@ -37,7 +38,7 @@ public class ListaPokemosCapturados extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      *
-     * @return
+     * @return  retorna la vista raiz para el diseño del fragmento.
      */
     @Nullable
     @Override
@@ -70,8 +71,10 @@ public class ListaPokemosCapturados extends Fragment {
      * Metódo que crea la lista de pokemons capturados.
      * añade objetos de tipo PokemonsData y los añade a un Arraylist
      */
-    private void listaPokemonsCapturados() {
+    private void listaPokemonsCapturados(ResponseDetallePokemon pokemon) {
         pokemonCapturado = new ArrayList<>();
+        pokemonCapturado.add(pokemon);
+        adapter.notifyDataSetChanged();
 
     }
 }

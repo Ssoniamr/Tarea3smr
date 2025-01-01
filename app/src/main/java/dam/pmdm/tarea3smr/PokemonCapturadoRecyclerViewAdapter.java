@@ -12,13 +12,14 @@ import java.util.ArrayList;
 
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
+import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
 
 /**
  * Clase adaptador para mostrar una lista de personajes en un RecyclerView
  */
 public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<PokemonsCapturadosCardview> {
 
-    private final ArrayList<PokemonData> pokemonCapturado;
+    private final ArrayList<ResponseDetallePokemon> pokemonCapturado;
     private final Context context;
 
     /**
@@ -27,7 +28,7 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
      * @param pokemonCapturado indica la lista de pokemons capturados.
      * @param context          indica el contexto de la actividad.
      */
-    public PokemonCapturadoRecyclerViewAdapter(ArrayList<PokemonData> pokemonCapturado, Context context) {
+    public PokemonCapturadoRecyclerViewAdapter(ArrayList<ResponseDetallePokemon> pokemonCapturado, Context context) {
         this.pokemonCapturado = pokemonCapturado;
         this.context = context;
     }
@@ -56,7 +57,7 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
      */
     @Override
     public void onBindViewHolder(@NonNull PokemonsCapturadosCardview holder, int position) {
-        PokemonData pokemonActual = this.pokemonCapturado.get(position);
+        ResponseDetallePokemon pokemonActual = this.pokemonCapturado.get(position);
         holder.bind(pokemonActual);
 
         holder.itemView.setOnClickListener(view -> itemcliked(pokemonActual, view));
@@ -65,12 +66,12 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
 
     /**
      * Método que maneja el evento clic sobre el item, indica hacia donde navegar llamando al metodo
-     * {@link MainActivity#pokemonCapturadoClicked(PokemonDataData, View)}
+     * {@link MainActivity#pokemonCapturadoClicked(ResponseDetallePokemon, View)}
      *
      * @param pokemonActual indica el objeto PokemonData actual.
      * @param view          indica la vista del item que se clicó.
      */
-    private void itemcliked(PokemonData pokemonActual, View view) {
+    private void itemcliked(ResponseDetallePokemon pokemonActual, View view) {
         ((MainActivity) context).pokemonCapturadoClicked(pokemonActual, view);
     }
 
