@@ -44,12 +44,9 @@ public class ListaPokemonsDisponibles extends Fragment {
             @Override
             public void onResponse(Call<ResponseListaPokemons> call, Response<ResponseListaPokemons> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("API Response", "Response Body: " + response.body().toString());
                     List<ResponseUnPokemonList> pokemonLists = response.body().getUnPokemonLists();
                         listaPokemonsDisponibles.addAll(pokemonLists);
                     adapter.notifyDataSetChanged();
-                }else{
-                    Log.e("API Error", "Response unsuccessful or body is null");
                 }
             }
             @Override public void onFailure(Call<ResponseListaPokemons> call, Throwable t) {

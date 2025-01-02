@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.RecognitionService;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +16,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -30,8 +34,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import dam.pmdm.tarea3smr.databinding.ActivityMainBinding;
 import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         preferenciasGuardadas();
 
-
+        FirebaseApp.initializeApp(this);
     }
 
 
@@ -126,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view inidca la vistas, es decir, el item del RecyclerView que se seleccioná.
      */
     public void pokemonCapturadoClicked(ResponseDetallePokemon pokemon, View view){
-        String tipos = obtenerTipos(pokemon);
+        String tipos = obtenerTiposString(pokemon);
 
         Bundle bundle = new Bundle();
         bundle.putString("imagenUrl", pokemon.getSprite());
@@ -141,26 +148,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon){
-
+        // Obtener el fragmento de la lista de Pokémon capturados
+        ListaPokemosCapturados fragment = (ListaPokemosCapturados) getSupportFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_capturados);
+        if (fragment != null) {
+            fragment.obtenerDetallesPokemon(pokemon);
+        }
     }
 
-    public static String obtenerTipos(ResponseDetallePokemon pokemon) {
-        // Obtenemos la lista de tipos
-        List<ResponseTipoPokemon> listaTipos = pokemon.getTypes();
-        StringBuilder tipos = new StringBuilder();
-
-        // Construimos la cadena de tipos separados por comas
-        for (ResponseTipoPokemon tipo : listaTipos) {
-            tipos.append(tipo.getName()).append(", ");
+    public void guardarPokemonEnFirebase(ResponseDetallePokemon pokemon) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> pokemonMap = new HashMap<>();
+        pokemonMap.put("name", pokemon.getName());
+        pokemonMap.put("index", pokemon.getId());
+        pokemonMap.put("imageUrl", pokemon.getSprite());
+        pokemonMap.put("types", obtenerTipos(pokemon));
+        pokemonMap.put("weight", pokemon.getWeight());
+        pokemonMap.put("height", pokemon.getHeight());
+        db.collection("capturedPokemons").document(pokemon.getName())
+                .set(pokemonMap)
+                .addOnSuccessListener(aVoid -> Log.d("Firebase", "DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e -> Log.w("Firebase", "Error writing document", e));
+    }
+    public static List<Map<String, String>> obtenerTipos(ResponseDetallePokemon pokemon) {
+        List<Map<String, String>> tipos = new ArrayList<>();
+        for (ResponseTipoPokemon tipo : pokemon.getTypes()) {
+            Map<String, String> tipoMap = new HashMap<>();
+            tipoMap.put("name", tipo.getName());
+            tipos.add(tipoMap);
         }
-        // Eliminamos la última coma y espacio si existe
-        if (tipos.length() > 0) {
-            tipos.setLength(tipos.length() - 2);
-        }
-        return tipos.toString();
+        return tipos;
     }
 
+    public static String obtenerTiposString(ResponseDetallePokemon pokemon) {
+        List<Map<String, String>> tiposMapList = MainActivity.obtenerTipos(pokemon);
+        List<String> tiposList = new ArrayList<>();
+        for (Map<String, String> tipoMap : tiposMapList) {
+            tiposList.add(tipoMap.get("name"));
+        }
+        return TextUtils.join(", ", tiposList);
 
+    }
     public  void cerrarSesion(){
         AuthUI.getInstance()
                 .signOut(this)
@@ -212,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
         menu.clear();
         binding.navigationButton.inflateMenu(R.menu.button_menu);
     }
-
 }
 
 
