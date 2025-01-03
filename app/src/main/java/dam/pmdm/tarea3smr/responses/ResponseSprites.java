@@ -9,6 +9,13 @@ public class ResponseSprites {
     @Expose
     private String frontDefault;
 
+    public ResponseSprites() {
+    }
+
+    public ResponseSprites(String frontDefault) {
+        this.frontDefault = frontDefault;
+    }
+
     public String getFrontDefault() {
         return frontDefault;
     }

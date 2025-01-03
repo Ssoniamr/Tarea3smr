@@ -11,13 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -27,6 +20,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         idioma = sharedPreferences.getString("elegir_idioma", "es");
         changeLanguage(idioma);
+
+        // Obtiene el estado del SwitchPreference
+        boolean eliminarPokemonEnabled = sharedPreferences.getBoolean("eliminar_pokemon", false);
+        if (eliminarPokemonEnabled) {
+            // Lógica adicional si el SwitchPreference está activado
+            Log.d("MainActivity", "Eliminación de Pokémon activada");
+        } else {
+            Log.d("MainActivity", "Eliminación de Pokémon desactivada");
+        }
     }
 
     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -96,15 +104,16 @@ public class MainActivity extends AppCompatActivity {
         String tipos = obtenerTiposString(pokemon);
 
         Bundle bundle = new Bundle();
-        bundle.putString("imagenUrl", pokemon.getSprites().getFrontDefault());
+        //bundle.putString("sprite", pokemon.getSprites().getFrontDefault());
         bundle.putString("name", pokemon.getName());
-        bundle.putLong("indice", pokemon.getId());
-        bundle.putString("tipos", tipos);
-        bundle.putLong("peso", pokemon.getWeight());
-        bundle.putLong("altura", pokemon.getHeight());
+        bundle.putLong("index", pokemon.getIndex());
+        bundle.putString("types", obtenerTipos(pokemon).toString());
+        bundle.putLong("weight", pokemon.getWeight());
+        bundle.putLong("height", pokemon.getHeight());
 
         Navigation.findNavController(view).navigate(R.id.pkemonsDetailFragment, bundle);
     }
+
 
     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon) {
         Log.d("Pokemon", "pokemonDisponiblesClicked: " + pokemon.getName());
@@ -125,26 +134,33 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("pokemonName", pokemon.getName());
 
         // Navega al fragmento ListaPokemosCapturados pasando el Bundle
-        navController.navigate(R.id.fragment_lista_pokemons_capturados, bundle);
+        if (navController.getCurrentDestination().getId() != R.id.fragment_lista_pokemons_capturados) {
+            navController.navigate(R.id.fragment_lista_pokemons_capturados, bundle);
 
-        // Añadir una pausa para asegurar que la transacción se completa
-        navHostFragment.getChildFragmentManager().executePendingTransactions();
-        Fragment fragment = navHostFragment.getChildFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_capturados);
-        if (fragment != null) {
-            Log.d("Pokemon", "Fragmento encontrado después de la navegación");
+            // Añadir una pausa para asegurar que la transacción se completa
+            navHostFragment.getChildFragmentManager().executePendingTransactions();
+            Fragment fragment = navHostFragment.getChildFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_capturados);
+            if (fragment != null) {
+                Log.d("Pokemon", "Fragmento encontrado después de la navegación");
+            } else {
+                Log.e("Pokemon", "Fragment ListaPokemosCapturados no encontrado después de la navegación");
+            }
         } else {
-            Log.e("Pokemon", "Fragment ListaPokemosCapturados no encontrado después de la navegación");
+            Log.d("Pokemon", "Ya estamos en el fragmento ListaPokemosCapturados");
+            Fragment fragment = navHostFragment.getChildFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_capturados);
+            if (fragment instanceof ListaPokemosCapturados) {
+                ListaPokemosCapturados listaPokemosCapturados = (ListaPokemosCapturados) fragment;
+                listaPokemosCapturados.obtenerDetallesPokemon(pokemon.getName());
+            }
         }
     }
-
-
 
     public void guardarPokemonEnFirebase(ResponseDetallePokemon pokemon) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> pokemonMap = new HashMap<>();
         pokemonMap.put("name", pokemon.getName());
-        pokemonMap.put("index", pokemon.getId());
-        pokemonMap.put("imageUrl", pokemon.getSprites().getFrontDefault());
+        pokemonMap.put("index", pokemon.getIndex());
+        pokemonMap.put("sprite", pokemon.getSprites().getFrontDefault());
         pokemonMap.put("types", obtenerTipos(pokemon));
         pokemonMap.put("weight", pokemon.getWeight());
         pokemonMap.put("height", pokemon.getHeight());
@@ -176,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         return tipos;
     }
 
-
     public static String obtenerTiposString(ResponseDetallePokemon pokemon) {
         List<Map<String, String>> tiposMapList = MainActivity.obtenerTipos(pokemon);
         List<String> tiposList = new ArrayList<>();
@@ -189,9 +204,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return TextUtils.join(", ", tiposList);
     }
-
-
-
 
     public void cerrarSesion() {
         AuthUI.getInstance()

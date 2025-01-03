@@ -8,6 +8,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
+import androidx.preference.PreferenceManager;
+import android.content.SharedPreferences;
 
 public class PreferenceAjustes extends PreferenceFragmentCompat {
 
@@ -44,6 +46,18 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
                 return true;
             });
         }
+
+        // Configurar el SwitchPreference
+        if (eliminarPokemonPreference != null) {
+            eliminarPokemonPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean isChecked = (Boolean) newValue;
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("eliminar_pokemon", isChecked);
+                editor.apply();
+                return true;
+            });
+        }
     }
 
     private boolean onClick(Preference preference) {
@@ -72,8 +86,7 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         return false;
     }
 
-
-/**
+    /**
      * Metodo para actualizar las vistas despues de cambiar el idioma
      */
     public void updateLanguajeView() {
@@ -86,5 +99,4 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         acercaDe.setSummary(R.string.info_app);
         cerrarSesion.setTitle(R.string.cerrar_sesi_n);
     }
-
 }

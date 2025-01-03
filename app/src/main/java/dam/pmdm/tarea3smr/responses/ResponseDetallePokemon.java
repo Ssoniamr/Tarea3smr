@@ -9,9 +9,9 @@ public class ResponseDetallePokemon {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("id")
+    @SerializedName("index")
     @Expose
-    private long id;
+    private long index;
     @SerializedName("sprites")
     @Expose
     private ResponseSprites sprites;
@@ -28,9 +28,9 @@ public class ResponseDetallePokemon {
     public ResponseDetallePokemon() {
     }
 
-    public ResponseDetallePokemon(String name, long id, ResponseSprites sprites, List<ResponseTipoPokemon> types, long weight, long height) {
+    public ResponseDetallePokemon(String name, long index, ResponseSprites sprites, List<ResponseTipoPokemon> types, long weight, long height) {
         this.name = name;
-        this.id = id;
+        this.index = index;
         this.sprites = sprites;
         this.types = types;
         this.weight = weight;
@@ -45,12 +45,12 @@ public class ResponseDetallePokemon {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public long getIndex() {
+        return index;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIndex(long index) {
+        this.index = index;
     }
 
     public ResponseSprites getSprites() {

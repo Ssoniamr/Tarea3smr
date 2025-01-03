@@ -3,8 +3,11 @@ package dam.pmdm.tarea3smr;
 import static dam.pmdm.tarea3smr.MainActivity.obtenerTiposString;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
 
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
@@ -36,12 +39,13 @@ public class PokemonsCapturadosCardview extends RecyclerView.ViewHolder {
     public void bind(ResponseDetallePokemon pokemon) {
         if (pokemon != null) {
             // Verifica que el objeto ResponseSprites no sea nulo antes de acceder a él
-            if (pokemon.getSprites() != null) {
+            if (pokemon.getSprites() != null && pokemon.getSprites().getFrontDefault() != null) {
                 // Carga la imagen del Pokémon
                 Picasso.get().load(pokemon.getSprites().getFrontDefault()).into(binding.imagenPokemonCapturado);
                 Log.d("Pokemon", "Imagen vinculada: " + pokemon.getSprites().getFrontDefault());
             } else {
-                Log.e("Pokemon", "Error al vincular imagen - ResponseSprites es nulo");
+                Log.e("Pokemon", "Error al vincular imagen - ResponseSprites es nulo o URL de la imagen es nula");
+                binding.imagenPokemonCapturado.setImageResource(R.drawable.ic_launcher_background);
             }
 
             // Vincula el nombre del Pokémon
@@ -52,9 +56,23 @@ public class PokemonsCapturadosCardview extends RecyclerView.ViewHolder {
             String tipos = obtenerTiposString(pokemon);
             binding.tipoPokemonCapturado.setText(tipos);
             Log.d("Pokemon", "Tipos vinculados: " + tipos);
+
+            // Configura el botón de eliminación si la funcionalidad de eliminación está activada
+            ImageButton deleteButton = binding.deleteButton;
+            if (((PokemonCapturadoRecyclerViewAdapter) getBindingAdapter()).isDeletionEnabled()) {
+                deleteButton.setVisibility(View.VISIBLE);
+                deleteButton.setOnClickListener(v -> {
+                    int position = getBindingAdapterPosition();
+                    ((PokemonCapturadoRecyclerViewAdapter) getBindingAdapter()).eliminarPokemon(position);
+                });
+            } else {
+                deleteButton.setVisibility(View.GONE);
+            }
         } else {
             Log.e("Pokemon", "Error al vincular datos - Pokémon es nulo");
         }
     }
+
+
 
 }

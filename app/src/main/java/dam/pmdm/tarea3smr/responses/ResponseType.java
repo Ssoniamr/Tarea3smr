@@ -9,6 +9,13 @@ public class ResponseType {
     @Expose
     private String name;
 
+    public ResponseType() {
+    }
+
+    public ResponseType(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

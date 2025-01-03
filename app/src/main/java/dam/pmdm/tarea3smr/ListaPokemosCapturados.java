@@ -1,5 +1,6 @@
 package dam.pmdm.tarea3smr;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,9 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
+
+import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
+import dam.pmdm.tarea3smr.responses.ResponseType;
 import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +36,7 @@ import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
 public class ListaPokemosCapturados extends Fragment {
 
     private FragmentListaPokemonsCapturadosBinding binding;
-    private ArrayList<ResponseDetallePokemon> pokemonCapturado;
+    private ArrayList<ResponseDetallePokemon> pokemonCapturado = new ArrayList<>();
     private PokemonCapturadoRecyclerViewAdapter adapter;
 
     @Override
@@ -70,12 +79,30 @@ public class ListaPokemosCapturados extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d("CicloDeVida", "onViewCreated - ListaPokemosCapturados");
 
-        // Inicializa la lista de pokemons capturados
-        pokemonCapturado = new ArrayList<>();
-        // Creación del adapter y el LinearLayoutManager
         adapter = new PokemonCapturadoRecyclerViewAdapter(pokemonCapturado, getActivity());
         binding.pokemonsCapturadosRecyclerview.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.pokemonsCapturadosRecyclerview.setAdapter(adapter);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        boolean permitirEliminacion = preferences.getBoolean("eliminar_pokemon", false);
+        adapter.setDeletionEnabled(permitirEliminacion);
+
+        if (permitirEliminacion) {
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    int position = viewHolder.getAdapterPosition();
+                    adapter.eliminarPokemon(position);
+                }
+            });
+            itemTouchHelper.attachToRecyclerView(binding.pokemonsCapturadosRecyclerview);
+        }
+
         actualizarListaPokemonsCapturados();
 
         if (getArguments() != null) {
@@ -91,85 +118,112 @@ public class ListaPokemosCapturados extends Fragment {
      * Método que añade un Pokémon capturado a la lista.
      */
     public void anadirPokemonCapturado(ResponseDetallePokemon pokemon) {
-        if (pokemon != null) {
+        if (pokemon != null && !pokemonCapturado.contains(pokemon)) {
             pokemonCapturado.add(pokemon);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemInserted(pokemonCapturado.size() - 1);
             Log.d("Pokemon", "Pokémon añadido a la lista: " + pokemon.getName());
         } else {
-            Log.e("Pokemon", "Pokémon nulo no añadido a la lista");
+            Log.e("Pokemon", "Pokémon nulo o duplicado no añadido a la lista");
         }
     }
-
 
     /**
      * Método para obtener los detalles del Pokémon capturado.
      */
     public void obtenerDetallesPokemon(String pokemonName) {
         Log.d("Pokemon", "obtenerDetallesPokemon: " + pokemonName);
-        ApiInterface apiService = ApiAdaptador.getApiService();
-        Call<ResponseDetallePokemon> call = apiService.getDetallePokemon(pokemonName);
-        call.enqueue(new Callback<ResponseDetallePokemon>() {
-            @Override
-            public void onResponse(Call<ResponseDetallePokemon> call, Response<ResponseDetallePokemon> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ResponseDetallePokemon detallesPokemon = response.body();
-                    Log.d("Pokemon", "Detalles obtenidos: " + detallesPokemon.getName());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    // Verifica si ResponseSprites no es nulo
-                    if (detallesPokemon.getSprites() != null) {
-                        Log.d("Pokemon", "Sprites obtenidos: " + detallesPokemon.getSprites().getFrontDefault());
-                    } else {
-                        Log.e("Pokemon", "ResponseSprites es nulo");
-                    }
-
-                    anadirPokemonCapturado(detallesPokemon);
-                    ((MainActivity) getActivity()).guardarPokemonEnFirebase(detallesPokemon);
+        db.collection("capturedPokemons").document(pokemonName).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d("Pokemon", "El Pokémon ya existe en Firebase: " + pokemonName);
                 } else {
-                    Log.e("Pokemon", "Error en la respuesta de la API: " + response.errorBody());
-                    Toast.makeText(getContext(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
-                }
-            }
+                    ApiInterface apiService = ApiAdaptador.getApiService();
+                    Call<ResponseDetallePokemon> call = apiService.getDetallePokemon(pokemonName);
+                    call.enqueue(new Callback<ResponseDetallePokemon>() {
+                        @Override
+                        public void onResponse(Call<ResponseDetallePokemon> call, Response<ResponseDetallePokemon> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                ResponseDetallePokemon detallesPokemon = response.body();
+                                Log.d("Pokemon", "Detalles obtenidos: " + detallesPokemon.getName());
 
-            @Override
-            public void onFailure(Call<ResponseDetallePokemon> call, Throwable t) {
-                Log.e("Pokemon", "Error al obtener los detalles del Pokémon", t);
-                Toast.makeText(getContext(), "Error al obtener los detalles del Pokémon", Toast.LENGTH_SHORT).show();
+                                if (detallesPokemon.getSprites() != null) {
+                                    Log.d("Pokemon", "Sprites obtenidos: " + detallesPokemon.getSprites().getFrontDefault());
+                                } else {
+                                    Log.e("Pokemon", "ResponseSprites es nulo");
+                                }
+
+                                anadirPokemonCapturado(detallesPokemon);
+                                ((MainActivity) getActivity()).guardarPokemonEnFirebase(detallesPokemon);
+                            } else {
+                                Log.e("Pokemon", "Error en la respuesta de la API: " + response.errorBody());
+                                Toast.makeText(getContext(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseDetallePokemon> call, Throwable t) {
+                            Log.e("Pokemon", "Error al obtener los detalles del Pokémon", t);
+                        }
+                    });
+                }
+            } else {
+                Log.e("Firebase", "Error al verificar la existencia del Pokémon en Firebase", task.getException());
             }
         });
     }
 
 
-
     /**
-     * Método para actualizar la lista de Pokémon capturados desde Firebase.
+     * Método para actualizar la lista de pokemons capturados.
      */
     private void actualizarListaPokemonsCapturados() {
+        pokemonCapturado.clear(); // Limpiar la lista antes de actualizar
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("capturedPokemons")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        pokemonCapturado.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            pokemonCapturado.add(document.toObject(ResponseDetallePokemon.class));
+                            // Asegurarse de que los datos se deserializan correctamente
+                            ResponseDetallePokemon pokemon = document.toObject(ResponseDetallePokemon.class);
+                            if (pokemon != null) {
+                                Log.d("Pokemon", "Pokemon deserializado: " + pokemon.getName());
+                                Log.d("Pokemon", "Index: " + pokemon.getIndex());
+                                Log.d("Pokemon", "Weight: " + pokemon.getWeight());
+                                Log.d("Pokemon", "Height: " + pokemon.getHeight());
+                                // Verificar que los datos importantes no son nulos
+                                if (pokemon.getSprites() != null && pokemon.getSprites().getFrontDefault() != null) {
+                                    Log.d("Pokemon", "URL de la imagen: " + pokemon.getSprites().getFrontDefault());
+                                } else {
+                                    Log.e("Pokemon", "Error al deserializar imagenUrl - es nulo");
+                                }
+                                if (pokemon.getTypes() != null) {
+                                    for (ResponseTipoPokemon tipo : pokemon.getTypes()) {
+                                        if (tipo != null && tipo.getType() != null && tipo.getType().getName() != null) {
+                                            Log.d("Pokemon", "Type: " + tipo.getType().getName());
+                                        } else {
+                                            Log.e("Pokemon", "Error al deserializar el tipo - es nulo");
+                                        }
+                                    }
+                                } else {
+                                    Log.e("Pokemon", "Types es nulo");
+                                }
+                                if (!pokemonCapturado.contains(pokemon)) {
+                                    pokemonCapturado.add(pokemon);
+                                }
+                            } else {
+                                Log.e("Pokemon", "Error al deserializar el Pokemon - Pokemon es nulo");
+                            }
                         }
                         adapter.notifyDataSetChanged();
                     } else {
-                        // Manejo de errores
-                        Toast.makeText(getContext(), "Error al actualizar la lista de Pokémon capturados", Toast.LENGTH_SHORT).show();
+                        Log.w("Pokemon", "Error getting documents.", task.getException());
                     }
                 });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("CicloDeVida", "onDestroyView - ListaPokemosCapturados");
-    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("CicloDeVida", "onDestroy - ListaPokemosCapturados");
-    }
 }

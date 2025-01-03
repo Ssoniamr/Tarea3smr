@@ -53,26 +53,26 @@ public class PkemonsDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
-            String imagen = getArguments().getString("imagenUrl");
+            String sprite = getArguments().getString("sprite");
             String name = getArguments().getString("name");
-            String index = getArguments().getString("index");
-            String tipos = getArguments().getString("tipos");
-            String peso = getArguments().getString("peso");
-            String altura = getArguments().getString("altura");
+            Long index = getArguments().getLong("index");
+            String types = getArguments().getString("types");
+            Long weight = getArguments().getLong("weight");
+            Long height = getArguments().getLong("height");
 
             // Ponemos los tipos de datos en negrita
-            String negrita = getString(R.string.indice_del_pokemon);
+           /* String negrita = getString(R.string.indice_del_pokemon);
             Spannable spannable = new SpannableString(index);
             int start = index.indexOf(negrita);
             int end = start + negrita.length();
-            spannable.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
 
-            Picasso.get().load(imagen).into(binding.imagePokemonDetail);
+            Picasso.get().load(sprite).into(binding.imagePokemonDetail);
             binding.nombrePokemon.setText(name);
-            binding.indexPokemon.setText(spannable);
-            binding.tipoPokemon.setText(tipos);
-            binding.pesoPokemon.setText(peso);
-            binding.alturaPokemon.setText(altura);
+            binding.indexPokemon.setText(index.toString());
+            binding.tipoPokemon.setText(types);
+            binding.pesoPokemon.setText(weight.toString());
+            binding.alturaPokemon.setText(height.toString());
             String seleccion = getString(R.string.has_seleccionado_a) + " " + binding.nombrePokemon.getText();
             Toast.makeText(requireContext(), seleccion, Toast.LENGTH_SHORT).show();
         }
