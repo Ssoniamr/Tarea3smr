@@ -1,10 +1,7 @@
-
 package dam.pmdm.tarea3smr.responses;
-
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 
 public class ResponseUnPokemonList {
 
@@ -15,15 +12,10 @@ public class ResponseUnPokemonList {
     @Expose
     private String url;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public ResponseUnPokemonList() {
     }
 
     public ResponseUnPokemonList(String name, String url) {
-        super();
         this.name = name;
         this.url = url;
     }
@@ -36,11 +28,6 @@ public class ResponseUnPokemonList {
         this.name = name;
     }
 
-    public ResponseUnPokemonList withName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -48,10 +35,4 @@ public class ResponseUnPokemonList {
     public void setUrl(String url) {
         this.url = url;
     }
-
-    public ResponseUnPokemonList withUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
 }

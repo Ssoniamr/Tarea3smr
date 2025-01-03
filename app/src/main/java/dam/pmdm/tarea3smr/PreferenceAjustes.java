@@ -1,8 +1,6 @@
 package dam.pmdm.tarea3smr;
 
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
@@ -10,8 +8,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 public class PreferenceAjustes extends PreferenceFragmentCompat {
 
@@ -22,15 +18,6 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
     public static PreferenceCategory preferenceCategory;
     public static SwitchPreference eliminarPokemonPreference;
 
-
-    /**
-     * Método que inicializa las referencias y les asigna listener para manejarlas mediante el
-     *      * método {@link #onClick(Preference)}
-     * @param savedInstanceState If the fragment is being re-created from a previous saved state,
-     *                           this is the state.
-     * @param rootKey            If non-null, this preference fragment should be rooted at the
-     *                           {@link PreferenceAjustes} with this key.
-     */
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
@@ -41,31 +28,36 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         preferenceCategory = findPreference("preference_category");
         eliminarPokemonPreference = findPreference("eliminar_pokemon");
 
-        acercaDe.setOnPreferenceClickListener(this::onClick);
-        cerrarSesion.setOnPreferenceClickListener(this::onClick);
-        idiomaList.setOnPreferenceChangeListener((preference, newValue) -> {
-            idioma = (String) newValue;
-            if(((MainActivity) getActivity())!=null) {
-                ((MainActivity) getActivity()).changeLanguage(idioma);
-            }
-            updateLanguajeView();
-            return true;
-        });
-
+        if (acercaDe != null) {
+            acercaDe.setOnPreferenceClickListener(this::onClick);
+        }
+        if (cerrarSesion != null) {
+            cerrarSesion.setOnPreferenceClickListener(this::onClick);
+        }
+        if (idiomaList != null) {
+            idiomaList.setOnPreferenceChangeListener((preference, newValue) -> {
+                idioma = (String) newValue;
+                if (getActivity() != null) {
+                    ((MainActivity) getActivity()).changeLanguage(idioma);
+                }
+                updateLanguajeView();
+                return true;
+            });
+        }
     }
 
     private boolean onClick(Preference preference) {
-        if(getContext()!=null){
-        if(preference.getKey().equals("acerca_de")){
-            new AlertDialog.Builder(getContext())
-                    .setTitle(R.string.acerca_de)
-                    .setMessage(R.string.infromacion_desarrollador)
-                    .setPositiveButton("ok", null)
-                    .show();
-            return true;
-            }else if(preference.getKey().equals("cerrar_sesion")) {
+        if (getContext() != null) {
+            if (preference.getKey().equals("acerca_de")) {
                 new AlertDialog.Builder(getContext())
-                        .setTitle(R.string.cerrar_sesi_n)
+                        .setTitle(R.string.acerca_de)
+                        .setMessage(R.string.infromacion_desarrollador)
+                        .setPositiveButton("ok", null)
+                        .show();
+                return true;
+            } else if (preference.getKey().equals("cerrar_sesion")) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.cerrar_sesion)
                         .setMessage(R.string.confirmar_cierre)
                         .setPositiveButton("Sí", (dialog, which) -> {
                             if (getActivity() != null) {
@@ -80,7 +72,8 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         return false;
     }
 
-    /**
+
+/**
      * Metodo para actualizar las vistas despues de cambiar el idioma
      */
     public void updateLanguajeView() {

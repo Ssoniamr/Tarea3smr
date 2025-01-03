@@ -1,40 +1,26 @@
-
 package dam.pmdm.tarea3smr.responses;
-
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
 public class ResponseTipoPokemon {
 
-    @SerializedName("name")
+    @SerializedName("type")
     @Expose
-    private String name;
+    private ResponseType type;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public ResponseTipoPokemon() {
     }
 
-    public ResponseTipoPokemon(String name) {
-        super();
-        this.name = name;
+    public ResponseTipoPokemon(ResponseType type) {
+        this.type = type;
     }
 
-    public String getName() {
-        return name;
+    public ResponseType getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(ResponseType type) {
+        this.type = type;
     }
-
-    public ResponseTipoPokemon withName(String name) {
-        this.name = name;
-        return this;
-    }
-
 }

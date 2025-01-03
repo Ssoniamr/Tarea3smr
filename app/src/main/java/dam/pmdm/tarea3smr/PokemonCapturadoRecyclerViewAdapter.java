@@ -1,6 +1,7 @@
 package dam.pmdm.tarea3smr;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
-import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
 
 /**
- * Clase adaptador para mostrar una lista de personajes en un RecyclerView
+ * Clase adaptador para mostrar una lista de Pokémon capturados en un RecyclerView.
  */
 public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<PokemonsCapturadosCardview> {
 
@@ -23,10 +23,10 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
     private final Context context;
 
     /**
-     * Constructor para inicializar el adactador
+     * Constructor para inicializar el adaptador.
      *
-     * @param pokemonCapturado indica la lista de pokemons capturados.
-     * @param context          indica el contexto de la actividad.
+     * @param pokemonCapturado lista de Pokémon capturados.
+     * @param context          contexto de la actividad.
      */
     public PokemonCapturadoRecyclerViewAdapter(ArrayList<ResponseDetallePokemon> pokemonCapturado, Context context) {
         this.pokemonCapturado = pokemonCapturado;
@@ -34,54 +34,55 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
     }
 
     /**
-     * Método que crea un nuevo viewHolder
+     * Método que crea un nuevo ViewHolder.
      *
-     * @param parent   The ViewGroup into which the new View will be added after it is bound to
-     *                 an adapter position.
-     * @param viewType The view type of the new View.
-     * @return retorna el nuevo viewHolder creado
+     * @param parent   ViewGroup al que se añadirá la nueva vista después de ser vinculada a una posición del adaptador.
+     * @param viewType tipo de la nueva vista.
+     * @return el nuevo ViewHolder creado.
      */
     @NonNull
     @Override
     public PokemonsCapturadosCardview onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         FragmentPokemonsCapturadosCardviewBinding binding = FragmentPokemonsCapturadosCardviewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        Log.d("Pokemon", "ViewHolder creado");
         return new PokemonsCapturadosCardview(binding);
     }
 
     /**
-     * vincula los datos del pokemonCapturado actual a viewHolder.
+     * Vincula los datos del Pokémon capturado actual al ViewHolder.
      *
-     * @param holder   The ViewHolder which should be updated to represent the contents of the
-     *                 item at the given position in the data set.
-     * @param position The position of the item within the adapter's data set.
+     * @param holder   ViewHolder que debe ser actualizado para representar los contenidos del elemento en la posición dada.
+     * @param position posición del elemento dentro del conjunto de datos del adaptador.
      */
     @Override
     public void onBindViewHolder(@NonNull PokemonsCapturadosCardview holder, int position) {
         ResponseDetallePokemon pokemonActual = this.pokemonCapturado.get(position);
+        Log.d("Pokemon", "onBindViewHolder - Vinculando datos del Pokémon en la posición: " + position);
         holder.bind(pokemonActual);
-
-        holder.itemView.setOnClickListener(view -> itemcliked(pokemonActual, view));
-
+        holder.itemView.setOnClickListener(view -> itemClicked(pokemonActual, view));
     }
 
     /**
-     * Método que maneja el evento clic sobre el item, indica hacia donde navegar llamando al metodo
+     * Método que maneja el evento de clic sobre el ítem, indica hacia dónde navegar llamando al método
      * {@link MainActivity#pokemonCapturadoClicked(ResponseDetallePokemon, View)}
      *
-     * @param pokemonActual indica el objeto PokemonData actual.
-     * @param view          indica la vista del item que se clicó.
+     * @param pokemonActual objeto PokemonData actual.
+     * @param view          vista del ítem que se clicó.
      */
-    private void itemcliked(ResponseDetallePokemon pokemonActual, View view) {
+    private void itemClicked(ResponseDetallePokemon pokemonActual, View view) {
+        Log.d("Pokemon", "Item clicado - Nombre del Pokémon: " + pokemonActual.getName());
         ((MainActivity) context).pokemonCapturadoClicked(pokemonActual, view);
     }
 
     /**
-     * Obtiene el tamaño del Arraylist que contiene la lista de pokemons capturados.
+     * Obtiene el tamaño del ArrayList que contiene la lista de Pokémon capturados.
      *
-     * @return retorna el numero de posiciones del Arraylist que contiene la lista de pokemons capturados.
+     * @return número de elementos del ArrayList que contiene la lista de Pokémon capturados.
      */
     @Override
     public int getItemCount() {
-        return pokemonCapturado.size();
+        int size = pokemonCapturado.size();
+        Log.d("Pokemon", "getItemCount - Número de elementos: " + size);
+        return size;
     }
 }

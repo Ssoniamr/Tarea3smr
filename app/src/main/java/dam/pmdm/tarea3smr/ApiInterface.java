@@ -13,6 +13,6 @@ public interface ApiInterface {
     @GET("pokemon")
     Call<ResponseListaPokemons> getPokemonsList(@Query("offset") int offset, @Query("limit") int limit);
 
-   @GET("pokemon/{name}")
-    Call<ResponseDetallePokemon> getdetallepokemon(@Path("name") String name);
+    @GET("pokemon/{name}")
+    Call<ResponseDetallePokemon> getDetallePokemon(@Path("name") String name);
 }

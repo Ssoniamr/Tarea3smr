@@ -1,8 +1,6 @@
-
 package dam.pmdm.tarea3smr.responses;
 
 import java.util.List;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,10 +11,10 @@ public class ResponseDetallePokemon {
     private String name;
     @SerializedName("id")
     @Expose
-    private long index;
-    @SerializedName("sprite")
+    private long id;
+    @SerializedName("sprites")
     @Expose
-    private String imagenUrl;
+    private ResponseSprites sprites;
     @SerializedName("types")
     @Expose
     private List<ResponseTipoPokemon> types;
@@ -27,18 +25,13 @@ public class ResponseDetallePokemon {
     @Expose
     private long height;
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public ResponseDetallePokemon() {
     }
 
-    public ResponseDetallePokemon(String name, long id, String sprite, List<ResponseTipoPokemon> types, long weight, long height) {
-        super();
+    public ResponseDetallePokemon(String name, long id, ResponseSprites sprites, List<ResponseTipoPokemon> types, long weight, long height) {
         this.name = name;
-        this.index = id;
-        this.imagenUrl = sprite;
+        this.id = id;
+        this.sprites = sprites;
         this.types = types;
         this.weight = weight;
         this.height = height;
@@ -52,35 +45,20 @@ public class ResponseDetallePokemon {
         this.name = name;
     }
 
-    public ResponseDetallePokemon withName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public long getId() {
-        return index;
+        return id;
     }
 
     public void setId(long id) {
-        this.index = id;
+        this.id = id;
     }
 
-    public ResponseDetallePokemon withId(long id) {
-        this.index = id;
-        return this;
+    public ResponseSprites getSprites() {
+        return sprites;
     }
 
-    public String getSprite() {
-        return imagenUrl;
-    }
-
-    public void setSprite(String sprite) {
-        this.imagenUrl = sprite;
-    }
-
-    public ResponseDetallePokemon withSprite(String sprite) {
-        this.imagenUrl = sprite;
-        return this;
+    public void setSprites(ResponseSprites sprites) {
+        this.sprites = sprites;
     }
 
     public List<ResponseTipoPokemon> getTypes() {
@@ -91,22 +69,12 @@ public class ResponseDetallePokemon {
         this.types = types;
     }
 
-    public ResponseDetallePokemon withTypes(List<ResponseTipoPokemon> types) {
-        this.types = types;
-        return this;
-    }
-
     public long getWeight() {
         return weight;
     }
 
     public void setWeight(long weight) {
         this.weight = weight;
-    }
-
-    public ResponseDetallePokemon withWeight(long weight) {
-        this.weight = weight;
-        return this;
     }
 
     public long getHeight() {
@@ -116,10 +84,4 @@ public class ResponseDetallePokemon {
     public void setHeight(long height) {
         this.height = height;
     }
-
-    public ResponseDetallePokemon withHeight(long height) {
-        this.height = height;
-        return this;
-    }
-
 }

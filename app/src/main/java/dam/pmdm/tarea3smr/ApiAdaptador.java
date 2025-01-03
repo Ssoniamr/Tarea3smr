@@ -7,7 +7,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiAdaptador {
     private static ApiInterface API_SERVICE;
-
     private static final String BASE_URL = "https://pokeapi.co/api/v2/";
 
     public static ApiInterface getApiService() {
@@ -23,7 +22,7 @@ public class ApiAdaptador {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClient.build()) // <-- set log level
+                    .client(httpClient.build()) // Asociamos el cliente configurado a Retrofit
                     .build();
 
             API_SERVICE = retrofit.create(ApiInterface.class);

@@ -2,15 +2,10 @@ package dam.pmdm.tarea3smr;
 
 import static dam.pmdm.tarea3smr.MainActivity.obtenerTiposString;
 
-import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
@@ -31,14 +26,35 @@ public class PokemonsCapturadosCardview extends RecyclerView.ViewHolder {
     public PokemonsCapturadosCardview(FragmentPokemonsCapturadosCardviewBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
-
     }
 
+    /**
+     * Método para vincular los datos del Pokémon capturado a las vistas.
+     *
+     * @param pokemon objeto ResponseDetallePokemon que contiene los datos del Pokémon.
+     */
+    public void bind(ResponseDetallePokemon pokemon) {
+        if (pokemon != null) {
+            // Verifica que el objeto ResponseSprites no sea nulo antes de acceder a él
+            if (pokemon.getSprites() != null) {
+                // Carga la imagen del Pokémon
+                Picasso.get().load(pokemon.getSprites().getFrontDefault()).into(binding.imagenPokemonCapturado);
+                Log.d("Pokemon", "Imagen vinculada: " + pokemon.getSprites().getFrontDefault());
+            } else {
+                Log.e("Pokemon", "Error al vincular imagen - ResponseSprites es nulo");
+            }
 
-    public void  bind(ResponseDetallePokemon pokemon){
-        Picasso.get().load(pokemon.getSprite()).into(binding.imagenPokemonCapturado);
-        binding.nombrePokemonCapturado.setText(pokemon.getName());
-        String tipos = obtenerTiposString(pokemon);
-        binding.tipoPokemonCapturado.setText(tipos);
+            // Vincula el nombre del Pokémon
+            binding.nombrePokemonCapturado.setText(pokemon.getName());
+            Log.d("Pokemon", "Nombre vinculado: " + pokemon.getName());
+
+            // Obtiene y vincula el tipo del Pokémon
+            String tipos = obtenerTiposString(pokemon);
+            binding.tipoPokemonCapturado.setText(tipos);
+            Log.d("Pokemon", "Tipos vinculados: " + tipos);
+        } else {
+            Log.e("Pokemon", "Error al vincular datos - Pokémon es nulo");
+        }
     }
+
 }
