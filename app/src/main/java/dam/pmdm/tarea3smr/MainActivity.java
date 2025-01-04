@@ -145,16 +145,12 @@ public class MainActivity extends AppCompatActivity {
      * @param pokemon El objeto ResponseUnPokemonList que representa al Pokémon disponible.
      */
     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon) {
-        Log.d("Pokemon", "pokemonDisponiblesClicked: " + pokemon.getName());
-
         // Asegúrate de que el NavController está inicializado
         if (navHostFragment == null) {
-            Log.e("NavController", "navHostFragment es nulo");
             return;
         }
         NavController navController = navHostFragment.getNavController();
         if (navController == null) {
-            Log.e("NavController", "navController es nulo");
             return;
         }
 
@@ -163,26 +159,9 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString("pokemonName", pokemon.getName());
 
         // Navegar al fragmento ListaPokemosCapturados pasando el Bundle
-        if (navController.getCurrentDestination().getId() != R.id.fragment_lista_pokemons_capturados) {
-            navController.navigate(R.id.fragment_lista_pokemons_capturados, bundle);
-
-            // Añadir una pausa para asegurar que la transacción se completa
-            navHostFragment.getChildFragmentManager().executePendingTransactions();
-            Fragment fragment = navHostFragment.getChildFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_capturados);
-            if (fragment != null) {
-                Log.d("Pokemon", "Fragmento encontrado después de la navegación");
-            } else {
-                Log.e("Pokemon", "Fragment ListaPokemosCapturados no encontrado después de la navegación");
-            }
-        } else {
-            Log.d("Pokemon", "Ya estamos en el fragmento ListaPokemosCapturados");
-            Fragment fragment = navHostFragment.getChildFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_capturados);
-            if (fragment instanceof ListaPokemosCapturados) {
-                ListaPokemosCapturados listaPokemosCapturados = (ListaPokemosCapturados) fragment;
-                listaPokemosCapturados.obtenerDetallesPokemon(pokemon.getName());
-            }
-        }
+        navController.navigate(R.id.fragment_lista_pokemons_capturados, bundle);
     }
+
 
     /**
      * Guarda los detalles de un Pokémon capturado en Firebase Firestore.
@@ -318,6 +297,8 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
         refreshNavigationMenu();
     }
+
+
 
     /**
      * Refresca el menú de navegación.

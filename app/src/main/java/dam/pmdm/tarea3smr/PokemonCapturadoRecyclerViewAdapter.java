@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
+import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 
 /**
  * Clase adaptador para mostrar una lista de Pokémon capturados en un RecyclerView.
@@ -140,15 +141,33 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
         if (position >= 0 && position < pokemonCapturado.size()) {
             // Obtiene el nombre del Pokémon a eliminar
             String pokemonName = pokemonCapturado.get(position).getName();
+
             // Elimina el Pokémon de Firebase
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("capturedPokemons").document(pokemonName)
                     .delete()
                     .addOnSuccessListener(aVoid -> Log.d("Firebase", "DocumentSnapshot successfully deleted for: " + pokemonName))
                     .addOnFailureListener(e -> Log.w("Firebase", "Error deleting document for: " + pokemonName, e));
-            // Elimina el Pokémon de la lista y notifica al adaptador
+
+            // Obtén la instancia de ListaPokemonsDisponibles
+            ListaPokemonsDisponibles listaPokemonsDisponiblesFragment = (ListaPokemonsDisponibles) ((MainActivity) context).getSupportFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_disponibles);
+
+            if (listaPokemonsDisponiblesFragment != null) {
+                for (ResponseUnPokemonList pokemon : listaPokemonsDisponiblesFragment.getListaPokemonsDisponibles()) {
+                    if (pokemon.getName().equals(pokemonName)) {
+                        pokemon.setCapturado(false);
+                        listaPokemonsDisponiblesFragment.getAdapter().notifyItemChanged(listaPokemonsDisponiblesFragment.getListaPokemonsDisponibles().indexOf(pokemon));
+                        break;
+                    }
+                }
+            }
+
+            // Elimina el Pokémon de la lista de capturados y notifica al adaptador
             pokemonCapturado.remove(position);
             notifyItemRemoved(position);
         }
     }
+
+
+
 }

@@ -86,6 +86,22 @@ public class ListaPokemonsDisponibles extends Fragment {
     }
 
     /**
+     * Devuelve la lista de pokemons disponibles
+     * @return retorna la lisa de pokemons disponibles
+     */
+    public ArrayList<ResponseUnPokemonList> getListaPokemonsDisponibles(){
+        return listaPokemonsDisponibles;
+    }
+
+    /**
+     * Devuelve la instancia del adaptador
+     * @return adaptador d pokemons disponibles
+     */
+    public PokemonsDisponiblesRecyclerviewAdapter getAdapter(){
+        return adapter;
+    }
+
+    /**
      * Método llamado cuando la vista del fragmento está a punto de ser destruida.
      */
     @Override

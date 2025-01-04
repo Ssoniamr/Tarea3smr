@@ -1,5 +1,8 @@
 package dam.pmdm.tarea3smr;
 
+import android.content.Context;
+
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsDisponiblesCardViewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
@@ -10,6 +13,7 @@ import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 public class PokemonsDisponiblesCardView extends RecyclerView.ViewHolder {
 
     public FragmentPokemonsDisponiblesCardViewBinding binding;
+
 
     /**
      * Constructor para inicializar un ViewHolder.
@@ -29,5 +33,8 @@ public class PokemonsDisponiblesCardView extends RecyclerView.ViewHolder {
      */
     public void bind(ResponseUnPokemonList pokemon) {
         binding.nombrePokemonDisponible.setText(pokemon.getName());
+
     }
+
+
 }

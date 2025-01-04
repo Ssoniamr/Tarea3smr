@@ -29,6 +29,7 @@ import java.util.Map;
 import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
 
 import dam.pmdm.tarea3smr.responses.ResponseType;
+import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +45,7 @@ public class ListaPokemosCapturados extends Fragment {
     private FragmentListaPokemonsCapturadosBinding binding;
     private ArrayList<ResponseDetallePokemon> pokemonCapturado = new ArrayList<>();
     private PokemonCapturadoRecyclerViewAdapter adapter;
+    private ArrayList<ResponseUnPokemonList> listaPokemonsDisponibles = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,7 +136,7 @@ public class ListaPokemosCapturados extends Fragment {
     /**
      * Método para obtener los detalles del Pokémon capturado.
      */
-    public void obtenerDetallesPokemon(String pokemonName) {
+    public void  obtenerDetallesPokemon(String pokemonName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Consulta a FirebaseFirestore para verificar si el Pokémon ya está almacenado
@@ -143,6 +145,16 @@ public class ListaPokemosCapturados extends Fragment {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     // Si el documento existe, significa que el Pokémon ya está en Firebase
+                    Toast.makeText(getContext(), "¡Este Pokémon ya fue capturado!", Toast.LENGTH_SHORT).show();
+
+                    // Marcar el Pokémon como capturado y actualizar la vista
+                    for (ResponseUnPokemonList pokemon : listaPokemonsDisponibles) {
+                        if (pokemon.getName().equals(pokemonName)) {
+                            pokemon.setCapturado(true);
+                            adapter.notifyItemChanged(listaPokemonsDisponibles.indexOf(pokemon));
+                            break;
+                        }
+                    }
                 } else {
                     // Si el documento no existe, realiza una llamada a la API para obtener los detalles del Pokémon
                     ApiInterface apiService = ApiAdaptador.getApiService();
@@ -190,6 +202,7 @@ public class ListaPokemosCapturados extends Fragment {
             }
         });
     }
+
 
 
     /**
