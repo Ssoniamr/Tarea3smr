@@ -76,14 +76,18 @@ public class PkemonsDetailFragment extends Fragment {
             // Cargar la imagen del Pokémon usando Picasso
             Picasso.get().load(sprite).into(binding.imagePokemonDetail);
             binding.nombrePokemon.setText(name);
-            binding.indexPokemon.setText(index.toString());
+            String indice = "INDEX:  " + index.toString();
+            binding.indexPokemon.setText(indice);
 
             // Convertir el JSON de tipos a una lista de mapas y luego a un string legible
-            String readableTypes = obtenerTiposStringFromJson(types);
+            String readableTypes = "TIPOS:  " + obtenerTiposStringFromJson(types);
             binding.tipoPokemon.setText(readableTypes);
 
-            binding.pesoPokemon.setText(weight.toString());
-            binding.alturaPokemon.setText(height.toString());
+            String peso = "PESO:  " + weight.toString();
+            binding.pesoPokemon.setText(peso);
+
+            String altura = "ALTURA:  " + height.toString();
+            binding.alturaPokemon.setText(altura);
 
             // Mostrar un mensaje Toast indicando el Pokémon seleccionado
             String seleccion = getString(R.string.has_seleccionado_a) + " " + binding.nombrePokemon.getText();

@@ -5,5 +5,7 @@
 
     <font
         android:font="@font/ketchum_italic"/>
+    <font
+        android:font="@font/pokemon_x_and_y"/>
 
 </font-family>

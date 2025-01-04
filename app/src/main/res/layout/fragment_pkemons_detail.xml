@@ -27,9 +27,11 @@
             <!--nombre del pokemon-->
             <TextView
                 android:id="@+id/nombre_pokemon"
+                style="@style/StyleTextDetalleTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nombre_pokemon"
+                android:textSize="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_pokemon_detail" />
@@ -37,40 +39,40 @@
             <!--index del pokemon-->
             <TextView
                 android:id="@+id/index_pokemon"
+                style="@style/StyleTextDetalle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/indice_del_pokemon"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nombre_pokemon" />
 
             <!--peso del pokemon-->
             <TextView
                 android:id="@+id/peso_pokemon"
+                style="@style/StyleTextDetalle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/peso_del_pokemon"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/index_pokemon" />
 
             <!--altura del pokemon-->
             <TextView
                 android:id="@+id/altura_pokemon"
+                style="@style/StyleTextDetalle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/altura_pokemon"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/peso_pokemon" />
 
             <!--tipo(s) del pokemon-->
             <TextView
                 android:id="@+id/tipo_pokemon"
+                style="@style/StyleTextDetalle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tipo_o_tipos_del_pokemon"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/altura_pokemon" />
 
