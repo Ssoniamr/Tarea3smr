@@ -2,7 +2,6 @@ package dam.pmdm.tarea3smr;
 
 import static dam.pmdm.tarea3smr.MainActivity.obtenerTiposString;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -38,24 +37,20 @@ public class PokemonsCapturadosCardview extends RecyclerView.ViewHolder {
      */
     public void bind(ResponseDetallePokemon pokemon) {
         if (pokemon != null) {
-            // Verifica que el objeto ResponseSprites no sea nulo antes de acceder a él
-            if (pokemon.getSprites() != null && pokemon.getSprites().getFrontDefault() != null) {
+            // Verifica que el campo sprite no sea nulo antes de acceder a él
+            if (pokemon.getSprite() != null) {
                 // Carga la imagen del Pokémon
-                Picasso.get().load(pokemon.getSprites().getFrontDefault()).into(binding.imagenPokemonCapturado);
-                Log.d("Pokemon", "Imagen vinculada: " + pokemon.getSprites().getFrontDefault());
+                Picasso.get().load(pokemon.getSprite()).into(binding.imagenPokemonCapturado);
             } else {
-                Log.e("Pokemon", "Error al vincular imagen - ResponseSprites es nulo o URL de la imagen es nula");
                 binding.imagenPokemonCapturado.setImageResource(R.drawable.ic_launcher_background);
             }
 
             // Vincula el nombre del Pokémon
             binding.nombrePokemonCapturado.setText(pokemon.getName());
-            Log.d("Pokemon", "Nombre vinculado: " + pokemon.getName());
 
             // Obtiene y vincula el tipo del Pokémon
             String tipos = obtenerTiposString(pokemon);
             binding.tipoPokemonCapturado.setText(tipos);
-            Log.d("Pokemon", "Tipos vinculados: " + tipos);
 
             // Configura el botón de eliminación si la funcionalidad de eliminación está activada
             ImageButton deleteButton = binding.deleteButton;
@@ -68,11 +63,6 @@ public class PokemonsCapturadosCardview extends RecyclerView.ViewHolder {
             } else {
                 deleteButton.setVisibility(View.GONE);
             }
-        } else {
-            Log.e("Pokemon", "Error al vincular datos - Pokémon es nulo");
         }
     }
-
-
-
 }

@@ -38,6 +38,9 @@ import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
 import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
 import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 
+/**
+ * MainActivity es la actividad principal que gestiona la navegación y las operaciones principales de la aplicación.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -63,12 +66,19 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.navigationButton, navController);
         }
 
+        // Configurar el listener para el botón de navegación
         binding.navigationButton.setOnItemSelectedListener(this::onNavigationItemSelected);
 
+        // Cargar preferencias guardadas
         preferenciasGuardadas();
+
+        // Inicializar Firebase
         FirebaseApp.initializeApp(this);
     }
 
+    /**
+     * Carga las preferencias guardadas y configura el idioma y opciones de eliminación de Pokémon.
+     */
     private void preferenciasGuardadas() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         idioma = sharedPreferences.getString("elegir_idioma", "es");
@@ -84,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Maneja la selección de elementos en el botón de navegación.
+     *
+     * @param menuItem El elemento del menú seleccionado.
+     * @return true si la navegación fue exitosa, false en caso contrario.
+     */
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         int menuItemId = menuItem.getItemId();
 
@@ -100,21 +116,34 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Maneja el clic en un Pokémon capturado para mostrar sus detalles.
+     *
+     * @param pokemon El objeto ResponseDetallePokemon que representa al Pokémon capturado.
+     * @param view    La vista que fue clicada.
+     */
     public void pokemonCapturadoClicked(ResponseDetallePokemon pokemon, View view) {
+        // Obtener los tipos del Pokémon como cadena de texto
         String tipos = obtenerTiposString(pokemon);
 
+        // Crear un Bundle para pasar los datos al fragmento de detalle
         Bundle bundle = new Bundle();
-        //bundle.putString("sprite", pokemon.getSprites().getFrontDefault());
+        bundle.putString("sprite", pokemon.getSprite());
         bundle.putString("name", pokemon.getName());
         bundle.putLong("index", pokemon.getIndex());
         bundle.putString("types", obtenerTipos(pokemon).toString());
         bundle.putLong("weight", pokemon.getWeight());
         bundle.putLong("height", pokemon.getHeight());
 
+        // Navegar al fragmento de detalle de Pokémon
         Navigation.findNavController(view).navigate(R.id.pkemonsDetailFragment, bundle);
     }
 
-
+    /**
+     * Maneja el clic en un Pokémon disponible para mostrar sus detalles.
+     *
+     * @param pokemon El objeto ResponseUnPokemonList que representa al Pokémon disponible.
+     */
     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon) {
         Log.d("Pokemon", "pokemonDisponiblesClicked: " + pokemon.getName());
 
@@ -129,11 +158,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Crea un Bundle para pasar los datos
+        // Crear un Bundle para pasar los datos
         Bundle bundle = new Bundle();
         bundle.putString("pokemonName", pokemon.getName());
 
-        // Navega al fragmento ListaPokemosCapturados pasando el Bundle
+        // Navegar al fragmento ListaPokemosCapturados pasando el Bundle
         if (navController.getCurrentDestination().getId() != R.id.fragment_lista_pokemons_capturados) {
             navController.navigate(R.id.fragment_lista_pokemons_capturados, bundle);
 
@@ -155,15 +184,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Guarda los detalles de un Pokémon capturado en Firebase Firestore.
+     *
+     * @param pokemon El objeto ResponseDetallePokemon que representa al Pokémon capturado.
+     */
     public void guardarPokemonEnFirebase(ResponseDetallePokemon pokemon) {
+        // Obtener una instancia de FirebaseFirestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> pokemonMap = new HashMap<>();
+
+        // Obtener la URL del sprite del Pokémon
+        String spriteUrl = pokemon.getSprites().getFrontDefault();
+        if (spriteUrl != null) {
+            pokemonMap.put("sprite", spriteUrl);
+        } else {
+            Log.e("Firebase", "La URL del sprite es nula");
+        }
+
+        // Agregar datos básicos del Pokémon al mapa
         pokemonMap.put("name", pokemon.getName());
         pokemonMap.put("index", pokemon.getIndex());
-        pokemonMap.put("sprite", pokemon.getSprites().getFrontDefault());
-        pokemonMap.put("types", obtenerTipos(pokemon));
+
+        // Convertir la estructura de tipos para Firebase
+        List<Map<String, String>> firebaseTypes = new ArrayList<>();
+        for (ResponseTipoPokemon tipo : pokemon.getTypes()) {
+            if (tipo.getType() != null) {
+                Map<String, String> typeMap = new HashMap<>();
+                typeMap.put("name", tipo.getType().getName());
+                firebaseTypes.add(typeMap);
+            }
+        }
+        pokemonMap.put("types", firebaseTypes);
+
+        // Agregar peso y altura del Pokémon al mapa
         pokemonMap.put("weight", pokemon.getWeight());
         pokemonMap.put("height", pokemon.getHeight());
+
+        // Guardar el documento en Firebase Firestore
         db.collection("capturedPokemons").document(pokemon.getName())
                 .set(pokemonMap)
                 .addOnSuccessListener(aVoid -> {
@@ -174,16 +232,22 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Obtiene los tipos de un Pokémon en formato de lista de mapas.
+     *
+     * @param pokemon El objeto ResponseDetallePokemon del cual se obtendrán los tipos.
+     * @return Una lista de mapas con los tipos del Pokémon.
+     */
     public static List<Map<String, String>> obtenerTipos(ResponseDetallePokemon pokemon) {
         List<Map<String, String>> tipos = new ArrayList<>();
         if (pokemon.getTypes() != null) {
             for (ResponseTipoPokemon tipo : pokemon.getTypes()) {
-                if (tipo != null && tipo.getType() != null) {
+                if (tipo != null && tipo.getType() != null && tipo.getType().getName() != null) {
                     Map<String, String> tipoMap = new HashMap<>();
                     tipoMap.put("name", tipo.getType().getName());
                     tipos.add(tipoMap);
                 } else {
-                    Log.e("Pokemon", "Error al obtener el tipo - ResponseType o getType es nulo");
+                    Log.e("Pokemon", "Error al obtener el tipo - ResponseType o nombre es nulo");
                 }
             }
         } else {
@@ -192,6 +256,12 @@ public class MainActivity extends AppCompatActivity {
         return tipos;
     }
 
+    /**
+     * Obtiene los tipos de un Pokémon en formato de cadena.
+     *
+     * @param pokemon El objeto ResponseDetallePokemon del cual se obtendrán los tipos.
+     * @return Una cadena con los tipos del Pokémon separados por comas.
+     */
     public static String obtenerTiposString(ResponseDetallePokemon pokemon) {
         List<Map<String, String>> tiposMapList = MainActivity.obtenerTipos(pokemon);
         List<String> tiposList = new ArrayList<>();
@@ -205,6 +275,9 @@ public class MainActivity extends AppCompatActivity {
         return TextUtils.join(", ", tiposList);
     }
 
+    /**
+     * Cierra la sesión del usuario actual.
+     */
     public void cerrarSesion() {
         AuthUI.getInstance()
                 .signOut(this)
@@ -216,12 +289,20 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Navega a la pantalla de inicio de sesión.
+     */
     private void irALogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * Cambia el idioma de la aplicación.
+     *
+     * @param language El código del idioma al cual se cambiará la aplicación.
+     */
     public void changeLanguage(String language) {
         try {
             Locale locale = new Locale(language);
@@ -238,6 +319,9 @@ public class MainActivity extends AppCompatActivity {
         refreshNavigationMenu();
     }
 
+    /**
+     * Refresca el menú de navegación.
+     */
     public void refreshNavigationMenu() {
         Menu menu = binding.navigationButton.getMenu();
         menu.clear();

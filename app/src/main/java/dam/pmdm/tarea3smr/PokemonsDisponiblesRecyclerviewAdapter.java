@@ -1,7 +1,6 @@
 package dam.pmdm.tarea3smr;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,6 @@ public class PokemonsDisponiblesRecyclerviewAdapter extends RecyclerView.Adapter
      * @param view          vista del ítem que se clicó.
      */
     private void itemClicked(ResponseUnPokemonList pokemonActual, View view) {
-        Log.d("Pokemon", "Clicked on: " + pokemonActual.getName());
         ((MainActivity) context).pokemonDisponiblesClicked(pokemonActual);
         Toast.makeText(context, "Has capturado a " + pokemonActual.getName(), Toast.LENGTH_SHORT).show();
     }

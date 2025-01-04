@@ -20,6 +20,9 @@ import java.util.List;
 
 import dam.pmdm.tarea3smr.databinding.ActivityLogingBinding;
 
+/**
+ * LoginActivity gestiona el proceso de autenticación del usuario.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLogingBinding binding;
@@ -36,18 +39,25 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+            // Si el usuario ya ha iniciado sesión, procede a la actividad principal
             goToMainActivity();
         } else {
+            // Si el usuario no ha iniciado sesión, inicia el proceso de inicio de sesión
             startSignIn();
         }
     }
 
+    /**
+     * Inicia el proceso de inicio de sesión utilizando FirebaseUI.
+     */
     private void startSignIn() {
+        // Define los proveedores de autenticación
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
 
+        // Crea y lanza la intención de inicio de sesión
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
@@ -57,26 +67,37 @@ public class LoginActivity extends AppCompatActivity {
         signInLauncher.launch(signInIntent);
     }
 
+    // Registra un lanzador para manejar el resultado del inicio de sesión
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
                 @Override
                 public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    // Maneja el resultado del inicio de sesión
                     onSignInResult(result);
                 }
             }
     );
 
+    /**
+     * Maneja el resultado del proceso de inicio de sesión.
+     *
+     * @param result El resultado del proceso de inicio de sesión.
+     */
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             goToMainActivity();
         } else {
+            // Muestra un mensaje de error si el inicio de sesión falló
             Toast.makeText(this, getString(R.string.error_al_iniciar_sesi_n), Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Navega a la actividad principal.
+     */
     private void goToMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

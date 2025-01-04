@@ -1,9 +1,11 @@
 package dam.pmdm.tarea3smr;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -12,8 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import dam.pmdm.tarea3smr.databinding.FragmentPkemonsDetailBinding;
+import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
+import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
+import dam.pmdm.tarea3smr.responses.ResponseType;
 
 /**
  * Clase que muestra los detalles de un pokemon.
@@ -60,19 +73,19 @@ public class PkemonsDetailFragment extends Fragment {
             Long weight = getArguments().getLong("weight");
             Long height = getArguments().getLong("height");
 
-            // Ponemos los tipos de datos en negrita
-           /* String negrita = getString(R.string.indice_del_pokemon);
-            Spannable spannable = new SpannableString(index);
-            int start = index.indexOf(negrita);
-            int end = start + negrita.length();
-            spannable.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-
+            // Cargar la imagen del Pokémon usando Picasso
             Picasso.get().load(sprite).into(binding.imagePokemonDetail);
             binding.nombrePokemon.setText(name);
             binding.indexPokemon.setText(index.toString());
-            binding.tipoPokemon.setText(types);
+
+            // Convertir el JSON de tipos a una lista de mapas y luego a un string legible
+            String readableTypes = obtenerTiposStringFromJson(types);
+            binding.tipoPokemon.setText(readableTypes);
+
             binding.pesoPokemon.setText(weight.toString());
             binding.alturaPokemon.setText(height.toString());
+
+            // Mostrar un mensaje Toast indicando el Pokémon seleccionado
             String seleccion = getString(R.string.has_seleccionado_a) + " " + binding.nombrePokemon.getText();
             Toast.makeText(requireContext(), seleccion, Toast.LENGTH_SHORT).show();
         }
@@ -82,5 +95,41 @@ public class PkemonsDetailFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    /**
+     * Método auxiliar para convertir el JSON de tipos a un formato legible usando obtenerTiposString.
+     *
+     * @param typesJson El JSON que contiene los tipos del Pokémon.
+     * @return Una cadena con los tipos del Pokémon en un formato legible.
+     */
+    private String obtenerTiposStringFromJson(String typesJson) {
+        List<Map<String, String>> tiposMapList = new Gson().fromJson(typesJson, new TypeToken<List<Map<String, String>>>() {
+        }.getType());
+
+        // Creación de un objeto ResponseDetallePokemon temporal para usar obtenerTiposString
+        ResponseDetallePokemon pokemonTemp = new ResponseDetallePokemon();
+        pokemonTemp.setTypes(convertirMapAListaTipos(tiposMapList));
+
+        // Aquí se usa el método obtenerTiposString
+        return MainActivity.obtenerTiposString(pokemonTemp);
+    }
+
+    /**
+     * Método auxiliar para convertir la lista de mapas a una lista de ResponseTipoPokemon.
+     *
+     * @param tiposMapList La lista de mapas que contiene los tipos del Pokémon.
+     * @return Una lista de objetos ResponseTipoPokemon.
+     */
+    private List<ResponseTipoPokemon> convertirMapAListaTipos(List<Map<String, String>> tiposMapList) {
+        List<ResponseTipoPokemon> tiposList = new ArrayList<>();
+        for (Map<String, String> tipoMap : tiposMapList) {
+            if (tipoMap != null && tipoMap.get("name") != null) {
+                ResponseType responseType = new ResponseType(tipoMap.get("name"));
+                ResponseTipoPokemon tipo = new ResponseTipoPokemon(responseType);
+                tiposList.add(tipo);
+            }
+        }
+        return tiposList;
     }
 }

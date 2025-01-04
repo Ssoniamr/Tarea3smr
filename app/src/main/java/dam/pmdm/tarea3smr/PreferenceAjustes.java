@@ -11,6 +11,9 @@ import androidx.preference.SwitchPreference;
 import androidx.preference.PreferenceManager;
 import android.content.SharedPreferences;
 
+/**
+ * Clase que maneja los ajustes de preferencias de la aplicación.
+ */
 public class PreferenceAjustes extends PreferenceFragmentCompat {
 
     public static Preference acercaDe;
@@ -20,6 +23,14 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
     public static PreferenceCategory preferenceCategory;
     public static SwitchPreference eliminarPokemonPreference;
 
+    /**
+     * Método que se llama durante la creación del fragmento y carga las preferencias desde un recurso XML.
+     *
+     * @param savedInstanceState Si es no nulo, este fragmento se está reconstruyendo
+     *                           desde un estado guardado previamente.
+     * @param rootKey            Si se especifica, este fragmento debe
+     *                           anidar su jerarquía de preferencias dentro de una PreferenceScreen con esta clave.
+     */
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
@@ -60,6 +71,12 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
         }
     }
 
+    /**
+     * Maneja los clics en las preferencias de la lista. crea un dialog segun la vista clicada
+     *
+     * @param preference La preferencia que fue clicada.
+     * @return true si el clic se maneja correctamente, false en caso contrario.
+     */
     private boolean onClick(Preference preference) {
         if (getContext() != null) {
             if (preference.getKey().equals("acerca_de")) {
@@ -87,7 +104,7 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
     }
 
     /**
-     * Metodo para actualizar las vistas despues de cambiar el idioma
+     * Metodo para actualizar las vistas después de cambiar el idioma.
      */
     public void updateLanguajeView() {
         preferenceCategory.setTitle(R.string.ajustes);

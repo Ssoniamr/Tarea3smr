@@ -1,22 +1,24 @@
 package dam.pmdm.tarea3smr;
 
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Clase que proporciona un adaptador para realizar peticiones a la API de PokeAPI.
+ */
 public class ApiAdaptador {
     private static ApiInterface API_SERVICE;
     private static final String BASE_URL = "https://pokeapi.co/api/v2/";
 
+    /**
+     * Método para obtener el servicio de la API.
+     *
+     * @return Instancia de ApiInterface para realizar peticiones a la API.
+     */
     public static ApiInterface getApiService() {
-        // Creamos un interceptor y le indicamos el log level a usar
-        final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        // Asociamos el interceptor a las peticiones
+        // Creamos el cliente HTTP
         final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()

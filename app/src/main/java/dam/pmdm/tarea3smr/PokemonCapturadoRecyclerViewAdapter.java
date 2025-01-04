@@ -68,7 +68,7 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
         // Verificar y loguear datos del Pokémon antes de vincular
         if (pokemonActual != null) {
             Log.d("Pokemon", "Datos del Pokémon - Nombre: " + pokemonActual.getName() +
-                    ", Imagen: " + (pokemonActual.getSprites() != null ? pokemonActual.getSprites().getFrontDefault() : "Nulo") +
+                    ", Imagen: " + (pokemonActual.getSprite() != null ? pokemonActual.getSprite() : "Nulo") +
                     ", Tipo: " + obtenerTiposString(pokemonActual));
         }
 
@@ -87,8 +87,6 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
             deleteButton.setVisibility(View.GONE);
         }
     }
-
-
 
     /**
      * Método que maneja el evento de clic sobre el ítem, indica hacia dónde navegar llamando al método
@@ -149,7 +147,8 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
                     .addOnSuccessListener(aVoid -> Log.d("Firebase", "DocumentSnapshot successfully deleted for: " + pokemonName))
                     .addOnFailureListener(e -> Log.w("Firebase", "Error deleting document for: " + pokemonName, e));
             // Elimina el Pokémon de la lista y notifica al adaptador
-            pokemonCapturado.remove(position); notifyItemRemoved(position);
+            pokemonCapturado.remove(position);
+            notifyItemRemoved(position);
         }
     }
 }

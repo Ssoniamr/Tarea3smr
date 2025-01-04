@@ -18,8 +18,8 @@
         <ImageView
             style="@style/StyleImageCardView"
             android:id="@+id/imagen_pokemon_capturado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:src="@drawable/ic_launcher_background"
             android:contentDescription="Imagen del pokemon capturado"
             app:layout_constraintDimensionRatio="1:1"
