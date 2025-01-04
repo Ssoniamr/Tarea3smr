@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
 
+import dam.pmdm.tarea3smr.responses.ResponseType;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -212,16 +214,22 @@ public class ListaPokemosCapturados extends Fragment {
                             if (pokemon != null) {
                                 // Verificar y procesar el sprite del Pokémon
                                 if (pokemon.getSprite() != null) {
+                                    // Lógica adicional para manejar el sprite, si es necesario
                                 }
 
                                 // Verificar y procesar los tipos del Pokémon
-                                if (pokemon.getTypes() != null) {
-                                    List<String> tiposPokemon = new ArrayList<>();
-                                    for (Map<String, String> tipoMap : (List<Map<String, String>>) document.get("types")) {
+                                List<ResponseTipoPokemon> tiposPokemon = new ArrayList<>();
+                                List<Map<String, String>> tiposMapList = (List<Map<String, String>>) document.get("types");
+                                if (tiposMapList != null) {
+                                    for (Map<String, String> tipoMap : tiposMapList) {
                                         if (tipoMap != null && tipoMap.get("name") != null) {
-                                            tiposPokemon.add(tipoMap.get("name"));
+                                            ResponseType responseType = new ResponseType(tipoMap.get("name"));
+                                            ResponseTipoPokemon tipo = new ResponseTipoPokemon(responseType);
+                                            tiposPokemon.add(tipo);
                                         }
                                     }
+                                    // Asignar la lista de tipos al objeto Pokémon
+                                    pokemon.setTypes(tiposPokemon);
                                 }
 
                                 // Añadir el Pokémon a la lista si no está ya presente
@@ -234,8 +242,11 @@ public class ListaPokemosCapturados extends Fragment {
                         adapter.notifyDataSetChanged();
                     } else {
                         // Manejar el error si la consulta no es exitosa
+                        Log.e("FirebaseError", "Error al obtener los documentos", task.getException());
                     }
                 });
     }
+
+
 
 }
