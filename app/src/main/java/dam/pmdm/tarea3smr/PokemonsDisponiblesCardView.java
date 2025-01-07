@@ -1,9 +1,7 @@
 package dam.pmdm.tarea3smr;
 
-import android.content.Context;
-
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsDisponiblesCardViewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 

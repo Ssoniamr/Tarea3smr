@@ -16,7 +16,6 @@ public class ResponseUnPokemonList {
     @Expose
     private String url;
 
-    private boolean capturado;
 
     /**
      * Constructor vacío para la clase.
@@ -73,11 +72,4 @@ public class ResponseUnPokemonList {
         this.url = url;
     }
 
-    public boolean isCapturado() {
-        return capturado;
-    }
-
-    public void setCapturado(boolean capturado) {
-        this.capturado = capturado;
-    }
 }

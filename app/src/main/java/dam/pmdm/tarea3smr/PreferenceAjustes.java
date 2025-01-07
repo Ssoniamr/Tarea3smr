@@ -1,6 +1,7 @@
 package dam.pmdm.tarea3smr;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.ListPreference;
@@ -9,6 +10,9 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.preference.PreferenceManager;
+
+import android.widget.Toast;
+
 import android.content.SharedPreferences;
 
 /**
@@ -66,6 +70,12 @@ public class PreferenceAjustes extends PreferenceFragmentCompat {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putBoolean("eliminar_pokemon", isChecked);
                 editor.apply();
+                // Mostrar un Toast según el estado del SwitchPreference
+                if (isChecked) {
+                    Toast.makeText(getContext(), R.string.mensaje_de_activacion_switch, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), R.string.mensaje_desactivacion_switch, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             });
         }

@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -26,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseTipoPokemon;
 
 import dam.pmdm.tarea3smr.responses.ResponseType;
@@ -46,6 +45,7 @@ public class ListaPokemosCapturados extends Fragment {
     private ArrayList<ResponseDetallePokemon> pokemonCapturado = new ArrayList<>();
     private PokemonCapturadoRecyclerViewAdapter adapter;
     private ArrayList<ResponseUnPokemonList> listaPokemonsDisponibles = new ArrayList<>();
+    public FragmentPokemonsCapturadosCardviewBinding bindingCarview;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,11 +105,13 @@ public class ListaPokemosCapturados extends Fragment {
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                     // Elimina el elemento deslizado
-                    int position = viewHolder.getAdapterPosition();
+                    int position = viewHolder.getBindingAdapterPosition();
                     adapter.eliminarPokemon(position);
                 }
             });
             itemTouchHelper.attachToRecyclerView(binding.pokemonsCapturadosRecyclerview);
+
+
         }
 
         // Actualiza la lista de pokemons capturados
@@ -136,73 +138,47 @@ public class ListaPokemosCapturados extends Fragment {
     /**
      * Método para obtener los detalles del Pokémon capturado.
      */
-    public void  obtenerDetallesPokemon(String pokemonName) {
+    public void obtenerDetallesPokemon(String pokemonName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Consulta a FirebaseFirestore para verificar si el Pokémon ya está almacenado
         db.collection("capturedPokemons").document(pokemonName).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    // Si el documento existe, significa que el Pokémon ya está en Firebase
-                    Toast.makeText(getContext(), "¡Este Pokémon ya fue capturado!", Toast.LENGTH_SHORT).show();
+            if (!task.isSuccessful() || !task.getResult().exists()) {
+                // Si el documento no existe, realiza una llamada a la API para obtener los detalles del Pokémon
+                ApiInterface apiService = ApiAdaptador.getApiService();
+                Call<ResponseDetallePokemon> call = apiService.getDetallePokemon(pokemonName);
+                call.enqueue(new Callback<ResponseDetallePokemon>() {
+                    @Override
+                    public void onResponse(Call<ResponseDetallePokemon> call, Response<ResponseDetallePokemon> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            ResponseDetallePokemon detallesPokemon = response.body();
 
-                    // Marcar el Pokémon como capturado y actualizar la vista
-                    for (ResponseUnPokemonList pokemon : listaPokemonsDisponibles) {
-                        if (pokemon.getName().equals(pokemonName)) {
-                            pokemon.setCapturado(true);
-                            adapter.notifyItemChanged(listaPokemonsDisponibles.indexOf(pokemon));
-                            break;
+                            // Verifica y procesa los sprites del Pokémon
+                            if (detallesPokemon.getSprites() != null && detallesPokemon.getSprites().getFrontDefault() != null) {
+                                detallesPokemon.setSprite(detallesPokemon.getSprites().getFrontDefault());
+                            }
+
+                            // Añade el Pokémon capturado a la lista y guárdalo en Firebase
+                            anadirPokemonCapturado(detallesPokemon);
+                            ((MainActivity) getActivity()).guardarPokemonEnFirebase(detallesPokemon);
+                        } else {
+                            // Muestra un mensaje de error si la respuesta de la API no es exitosa
+                            Toast.makeText(getContext(), R.string.error_en_la_respuesta_de_la_api, Toast.LENGTH_SHORT).show();
                         }
                     }
-                } else {
-                    // Si el documento no existe, realiza una llamada a la API para obtener los detalles del Pokémon
-                    ApiInterface apiService = ApiAdaptador.getApiService();
-                    Call<ResponseDetallePokemon> call = apiService.getDetallePokemon(pokemonName);
-                    call.enqueue(new Callback<ResponseDetallePokemon>() {
-                        @Override
-                        public void onResponse(Call<ResponseDetallePokemon> call, Response<ResponseDetallePokemon> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                ResponseDetallePokemon detallesPokemon = response.body();
 
-                                // Obtiene el índice del Pokémon
-                                detallesPokemon.getIndex();
-
-                                // Verifica y procesa los tipos del Pokémon
-                                if (detallesPokemon.getTypes() != null) {
-                                    for (ResponseTipoPokemon tipo : detallesPokemon.getTypes()) {
-                                        if (tipo.getType() != null && tipo.getType().getName() != null) {
-                                            // Tipo obtenido correctamente
-                                        }
-                                    }
-                                }
-
-                                // Verifica y procesa los sprites del Pokémon
-                                if (detallesPokemon.getSprites() != null && detallesPokemon.getSprites().getFrontDefault() != null) {
-                                    detallesPokemon.setSprite(detallesPokemon.getSprites().getFrontDefault());
-                                }
-
-                                // Añade el Pokémon capturado a la lista y guárdalo en Firebase
-                                anadirPokemonCapturado(detallesPokemon);
-                                ((MainActivity) getActivity()).guardarPokemonEnFirebase(detallesPokemon);
-                            } else {
-                                // Muestra un mensaje de error si la respuesta de la API no es exitosa
-                                Toast.makeText(getContext(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseDetallePokemon> call, Throwable t) {
-                            // Muestra un mensaje de error si falla la llamada a la API
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(Call<ResponseDetallePokemon> call, Throwable t) {
+                        // Muestra un mensaje de error si falla la llamada a la API
+                        Toast.makeText(getContext(), R.string.error_al_consultar_firebase, Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 // Muestra un mensaje de error si falla la consulta a Firebase
+                Toast.makeText(getContext(), R.string.error_en_la_llamada_a_la_api, Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
 
     /**
@@ -225,11 +201,6 @@ public class ListaPokemosCapturados extends Fragment {
                             // Convertir cada documento en un objeto ResponseDetallePokemon
                             ResponseDetallePokemon pokemon = document.toObject(ResponseDetallePokemon.class);
                             if (pokemon != null) {
-                                // Verificar y procesar el sprite del Pokémon
-                                if (pokemon.getSprite() != null) {
-                                    // Lógica adicional para manejar el sprite, si es necesario
-                                }
-
                                 // Verificar y procesar los tipos del Pokémon
                                 List<ResponseTipoPokemon> tiposPokemon = new ArrayList<>();
                                 List<Map<String, String>> tiposMapList = (List<Map<String, String>>) document.get("types");
@@ -244,7 +215,6 @@ public class ListaPokemosCapturados extends Fragment {
                                     // Asignar la lista de tipos al objeto Pokémon
                                     pokemon.setTypes(tiposPokemon);
                                 }
-
                                 // Añadir el Pokémon a la lista si no está ya presente
                                 if (!pokemonCapturado.contains(pokemon)) {
                                     pokemonCapturado.add(pokemon);
@@ -255,11 +225,9 @@ public class ListaPokemosCapturados extends Fragment {
                         adapter.notifyDataSetChanged();
                     } else {
                         // Manejar el error si la consulta no es exitosa
-                        Log.e("FirebaseError", "Error al obtener los documentos", task.getException());
+                        Toast.makeText(getContext(), R.string.error_al_obtener_los_documentos_de_firebase, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
-
 
 }

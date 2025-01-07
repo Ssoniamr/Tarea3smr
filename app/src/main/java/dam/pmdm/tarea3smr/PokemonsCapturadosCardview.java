@@ -58,8 +58,10 @@ public class PokemonsCapturadosCardview extends RecyclerView.ViewHolder {
                 deleteButton.setVisibility(View.VISIBLE);
                 deleteButton.setOnClickListener(v -> {
                     int position = getBindingAdapterPosition();
-                    ((PokemonCapturadoRecyclerViewAdapter) getBindingAdapter()).eliminarPokemon(position);
-                });
+                    if (position != RecyclerView.NO_POSITION) {
+                        ((PokemonCapturadoRecyclerViewAdapter) getBindingAdapter()).eliminarPokemon(position);
+                    }
+                    });
             } else {
                 deleteButton.setVisibility(View.GONE);
             }

@@ -39,4 +39,14 @@
     <string name="has_seleccionado_a">"has seleccionado a "</string>
     <string name="nombre_pok_mon_capturado">Nombre Pokémon capturado</string>
     <string name="tipo_pok_mon_capturado">tipo Pokémon capturado</string>
+    <string name="error_al_obtener_la_lista_de_pok_mon">Error al obtener la lista de Pokémon</string>
+    <string name="error_en_la_respuesta_de_la_api">Error en la respuesta de la API</string>
+    <string name="error_al_consultar_firebase">Error al consultar Firebase</string>
+    <string name="error_al_obtener_los_documentos_de_firebase">Error al obtener los documentos de Firebase</string>
+    <string name="error_en_la_llamada_a_la_api">Error en la llamada a la API</string>
+    <string name="pok_mon">"Pokémon "</string>
+    <string name="eliminado_correctamente">" eliminado correctamente"</string>
+    <string name="error_al_eliminar_pok_mon">"Error al eliminar Pokémon "</string>
+    <string name="mensaje_de_activacion_switch">Eliminación de Pokémon activada, podrá eliminar pokémons desde la lista Mis Pokémons</string>
+    <string name="mensaje_desactivacion_switch">Eliminación de Pokémon desactivada, NO podrá eliminar pokémons desde la lista Mis pokémons</string>
 </resources>

@@ -1,7 +1,7 @@
 package dam.pmdm.tarea3smr;
 
+
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -59,16 +61,32 @@ public class PokemonsDisponiblesRecyclerviewAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull PokemonsDisponiblesCardView holder, int position) {
         ResponseUnPokemonList pokemonActual = this.pokemonDisponibles.get(position);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String pokemonName = pokemonActual.getName();
+        // Consulta a FirebaseFirestore para verificar si el Pokémon ya está almacenado
+        db.collection("capturedPokemons").document(pokemonName).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    // Si el documento existe, significa que el Pokémon ya está en Firebase
+                    //cambiamos color en la lista de pokemons disponibles.
+                    int noDisponible = ContextCompat.getColor(context, R.color.gris);
+                    holder.binding.nombrePokemonDisponible.setTextColor(noDisponible);
 
-        // Cambiar color si está capturado
-        if (pokemonActual.isCapturado()) {
-            int noDisponible = ContextCompat.getColor(context, R.color.gris);
-            holder.binding.nombrePokemonDisponible.setTextColor(noDisponible);
-        } else {
-            int disponible = ContextCompat.getColor(context, R.color.Azul_oscuro);
-            holder.binding.nombrePokemonDisponible.setTextColor(disponible);
-        }
+                    //deshabilitamos el clic y mostramos toast
+                    holder.itemView.setOnClickListener(v -> {
+                        Toast.makeText(context, "¡Este Pokémon ya fue capturado!", Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    //sino existe lo ponemos en el color original.
+                    int disponible = ContextCompat.getColor(context, R.color.Azul_oscuro);
+                    holder.binding.nombrePokemonDisponible.setTextColor(disponible);
 
+                    //volver habilitar clic original si el pokemon existe
+                    holder.itemView.setOnClickListener(view -> itemClicked(pokemonActual, view));
+                }
+            }
+        });
         // Vincula los datos del Pokémon disponible al ViewHolder
         holder.bind(pokemonActual);
 
@@ -84,16 +102,10 @@ public class PokemonsDisponiblesRecyclerviewAdapter extends RecyclerView.Adapter
      * @param view          vista del ítem que se clicó.
      */
     private void itemClicked(ResponseUnPokemonList pokemonActual, View view) {
-        if (pokemonActual.isCapturado()) {
-            // Mostrar un mensaje si el Pokémon ya fue capturado
-            Toast.makeText(context, "¡Este Pokémon ya fue capturado!", Toast.LENGTH_SHORT).show();
-        } else {
-            // Capturar el Pokémon y actualizar el estado
-            ((MainActivity) context).pokemonDisponiblesClicked(pokemonActual);
-            pokemonActual.setCapturado(true); // Marcar como capturado
-            notifyItemChanged(pokemonDisponibles.indexOf(pokemonActual));
-          Toast.makeText(context, "Has capturado a " + pokemonActual.getName(), Toast.LENGTH_SHORT).show();
-        }
+        // Capturar el Pokémon y actualizar el estado
+        ((MainActivity) context).pokemonDisponiblesClicked(pokemonActual);
+        notifyItemChanged(pokemonDisponibles.indexOf(pokemonActual));
+        Toast.makeText(context, "Has capturado a " + pokemonActual.getName(), Toast.LENGTH_SHORT).show();
     }
 
     /**

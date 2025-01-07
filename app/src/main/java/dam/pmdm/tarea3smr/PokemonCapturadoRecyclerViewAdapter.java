@@ -1,13 +1,11 @@
 package dam.pmdm.tarea3smr;
 
-import static dam.pmdm.tarea3smr.MainActivity.obtenerTiposString;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 
 import dam.pmdm.tarea3smr.databinding.FragmentPokemonsCapturadosCardviewBinding;
 import dam.pmdm.tarea3smr.responses.ResponseDetallePokemon;
-import dam.pmdm.tarea3smr.responses.ResponseUnPokemonList;
 
 /**
  * Clase adaptador para mostrar una lista de Pokémon capturados en un RecyclerView.
@@ -51,7 +48,6 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
     @Override
     public PokemonsCapturadosCardview onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         FragmentPokemonsCapturadosCardviewBinding binding = FragmentPokemonsCapturadosCardviewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        Log.d("Pokemon", "ViewHolder creado");
         return new PokemonsCapturadosCardview(binding);
     }
 
@@ -64,29 +60,10 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
     @Override
     public void onBindViewHolder(@NonNull PokemonsCapturadosCardview holder, int position) {
         ResponseDetallePokemon pokemonActual = this.pokemonCapturado.get(position);
-        Log.d("Pokemon", "onBindViewHolder - Vinculando datos del Pokémon en la posición: " + position);
-
-        // Verificar y loguear datos del Pokémon antes de vincular
-        if (pokemonActual != null) {
-            Log.d("Pokemon", "Datos del Pokémon - Nombre: " + pokemonActual.getName() +
-                    ", Imagen: " + (pokemonActual.getSprite() != null ? pokemonActual.getSprite() : "Nulo") +
-                    ", Tipo: " + obtenerTiposString(pokemonActual));
-        }
 
         holder.bind(pokemonActual);
         holder.itemView.setOnClickListener(view -> itemClicked(pokemonActual, view));
 
-        // Configurar el botón de eliminación
-        ImageButton deleteButton = holder.binding.deleteButton;
-        if (isDeletionEnabled) {
-            deleteButton.setVisibility(View.VISIBLE);
-            deleteButton.setOnClickListener(v -> {
-                pokemonCapturado.remove(position);
-                notifyItemRemoved(position);
-            });
-        } else {
-            deleteButton.setVisibility(View.GONE);
-        }
     }
 
     /**
@@ -97,7 +74,6 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
      * @param view          vista del ítem que se clicó.
      */
     private void itemClicked(ResponseDetallePokemon pokemonActual, View view) {
-        Log.d("Pokemon", "Item clicado - Nombre del Pokémon: " + pokemonActual.getName());
         ((MainActivity) context).pokemonCapturadoClicked(pokemonActual, view);
     }
 
@@ -108,9 +84,7 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
      */
     @Override
     public int getItemCount() {
-        int size = pokemonCapturado.size();
-        Log.d("Pokemon", "getItemCount - Número de elementos: " + size);
-        return size;
+        return pokemonCapturado.size();
     }
 
     /**
@@ -146,28 +120,14 @@ public class PokemonCapturadoRecyclerViewAdapter extends RecyclerView.Adapter<Po
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("capturedPokemons").document(pokemonName)
                     .delete()
-                    .addOnSuccessListener(aVoid -> Log.d("Firebase", "DocumentSnapshot successfully deleted for: " + pokemonName))
-                    .addOnFailureListener(e -> Log.w("Firebase", "Error deleting document for: " + pokemonName, e));
-
-            // Obtén la instancia de ListaPokemonsDisponibles
-            ListaPokemonsDisponibles listaPokemonsDisponiblesFragment = (ListaPokemonsDisponibles) ((MainActivity) context).getSupportFragmentManager().findFragmentById(R.id.fragment_lista_pokemons_disponibles);
-
-            if (listaPokemonsDisponiblesFragment != null) {
-                for (ResponseUnPokemonList pokemon : listaPokemonsDisponiblesFragment.getListaPokemonsDisponibles()) {
-                    if (pokemon.getName().equals(pokemonName)) {
-                        pokemon.setCapturado(false);
-                        listaPokemonsDisponiblesFragment.getAdapter().notifyItemChanged(listaPokemonsDisponiblesFragment.getListaPokemonsDisponibles().indexOf(pokemon));
-                        break;
-                    }
-                }
-            }
+                    .addOnSuccessListener(aVoid -> Toast.makeText(context, context.getString(R.string.pok_mon) + pokemonName + context.getString(R.string.eliminado_correctamente), Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Toast.makeText(context, context.getString(R.string.error_al_eliminar_pok_mon) + pokemonName, Toast.LENGTH_SHORT).show());
 
             // Elimina el Pokémon de la lista de capturados y notifica al adaptador
             pokemonCapturado.remove(position);
             notifyItemRemoved(position);
         }
     }
-
 
 
 }

@@ -6,10 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,29 +72,23 @@ public class PkemonsDetailFragment extends Fragment {
             // Cargar la imagen del Pokémon usando Picasso
             Picasso.get().load(sprite).into(binding.imagePokemonDetail);
             binding.nombrePokemon.setText(name);
-            String indice = "INDEX:  " + index.toString();
+            String indice = "INDEX:  " + index;
             binding.indexPokemon.setText(indice);
 
             // Convertir el JSON de tipos a una lista de mapas y luego a un string legible
             String readableTypes = "TIPOS:  " + obtenerTiposStringFromJson(types);
             binding.tipoPokemon.setText(readableTypes);
 
-            String peso = "PESO:  " + weight.toString();
+            String peso = "PESO:  " + weight;
             binding.pesoPokemon.setText(peso);
 
-            String altura = "ALTURA:  " + height.toString();
+            String altura = "ALTURA:  " + height;
             binding.alturaPokemon.setText(altura);
 
             // Mostrar un mensaje Toast indicando el Pokémon seleccionado
             String seleccion = getString(R.string.has_seleccionado_a) + " " + binding.nombrePokemon.getText();
             Toast.makeText(requireContext(), seleccion, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     /**

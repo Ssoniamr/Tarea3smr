@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -86,12 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Obtiene el estado del SwitchPreference
         boolean eliminarPokemonEnabled = sharedPreferences.getBoolean("eliminar_pokemon", false);
-        if (eliminarPokemonEnabled) {
-            // Lógica adicional si el SwitchPreference está activado
-            Log.d("MainActivity", "Eliminación de Pokémon activada");
-        } else {
-            Log.d("MainActivity", "Eliminación de Pokémon desactivada");
-        }
+
     }
 
     /**
@@ -145,14 +139,7 @@ public class MainActivity extends AppCompatActivity {
      * @param pokemon El objeto ResponseUnPokemonList que representa al Pokémon disponible.
      */
     public void pokemonDisponiblesClicked(ResponseUnPokemonList pokemon) {
-        // Asegúrate de que el NavController está inicializado
-        if (navHostFragment == null) {
-            return;
-        }
         NavController navController = navHostFragment.getNavController();
-        if (navController == null) {
-            return;
-        }
 
         // Crear un Bundle para pasar los datos
         Bundle bundle = new Bundle();
@@ -177,13 +164,7 @@ public class MainActivity extends AppCompatActivity {
         String spriteUrl = pokemon.getSprites().getFrontDefault();
         if (spriteUrl != null) {
             pokemonMap.put("sprite", spriteUrl);
-        } else {
-            Log.e("Firebase", "La URL del sprite es nula");
         }
-
-        // Agregar datos básicos del Pokémon al mapa
-        pokemonMap.put("name", pokemon.getName());
-        pokemonMap.put("index", pokemon.getIndex());
 
         // Convertir la estructura de tipos para Firebase
         List<Map<String, String>> firebaseTypes = new ArrayList<>();
@@ -196,19 +177,23 @@ public class MainActivity extends AppCompatActivity {
         }
         pokemonMap.put("types", firebaseTypes);
 
-        // Agregar peso y altura del Pokémon al mapa
+        // Agregar datos básicos del Pokémon al mapa
+        pokemonMap.put("name", pokemon.getName());
+        pokemonMap.put("index", pokemon.getIndex());
         pokemonMap.put("weight", pokemon.getWeight());
         pokemonMap.put("height", pokemon.getHeight());
+
 
         // Guardar el documento en Firebase Firestore
         db.collection("capturedPokemons").document(pokemon.getName())
                 .set(pokemonMap)
                 .addOnSuccessListener(aVoid -> {
-                    Log.d("Firebase", "DocumentSnapshot successfully written for: " + pokemon.getName());
+                    Toast.makeText(getApplicationContext(), "Pokémon " + pokemon.getName() + " guardado correctamente", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Log.w("Firebase", "Error writing document for: " + pokemon.getName(), e);
+                    Toast.makeText(getApplicationContext(), "Error al guardar Pokémon " + pokemon.getName(), Toast.LENGTH_SHORT).show();
                 });
+
     }
 
     /**
@@ -225,12 +210,8 @@ public class MainActivity extends AppCompatActivity {
                     Map<String, String> tipoMap = new HashMap<>();
                     tipoMap.put("name", tipo.getType().getName());
                     tipos.add(tipoMap);
-                } else {
-                    Log.e("Pokemon", "Error al obtener el tipo - ResponseType o nombre es nulo");
                 }
             }
-        } else {
-            Log.e("Pokemon", "Error al obtener los tipos - Types es nulo");
         }
         return tipos;
     }
@@ -247,8 +228,6 @@ public class MainActivity extends AppCompatActivity {
         for (Map<String, String> tipoMap : tiposMapList) {
             if (tipoMap != null && tipoMap.get("name") != null) {
                 tiposList.add(tipoMap.get("name"));
-            } else {
-                Log.e("Pokemon", "Error al obtener el nombre del tipo - tipoMap o nombre es nulo");
             }
         }
         return TextUtils.join(", ", tiposList);

@@ -72,7 +72,7 @@ public class ListaPokemonsDisponibles extends Fragment {
                     adapter.notifyDataSetChanged();
                 } else {
                     // Muestra un mensaje de error si la respuesta no es exitosa
-                    Toast.makeText(getContext(), "No se pudo obtener la lista de Pokémon", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.error_al_obtener_la_lista_de_pok_mon, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -80,33 +80,27 @@ public class ListaPokemonsDisponibles extends Fragment {
             @Override
             public void onFailure(Call<ResponseListaPokemons> call, Throwable t) {
                 // Muestra un mensaje de error si ocurre un fallo en la llamada a la API
-                Toast.makeText(getContext(), "Error al obtener la lista de Pokémon", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.error_al_obtener_la_lista_de_pok_mon, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     /**
      * Devuelve la lista de pokemons disponibles
+     *
      * @return retorna la lisa de pokemons disponibles
      */
-    public ArrayList<ResponseUnPokemonList> getListaPokemonsDisponibles(){
+    public ArrayList<ResponseUnPokemonList> getListaPokemonsDisponibles() {
         return listaPokemonsDisponibles;
     }
 
     /**
      * Devuelve la instancia del adaptador
+     *
      * @return adaptador d pokemons disponibles
      */
-    public PokemonsDisponiblesRecyclerviewAdapter getAdapter(){
+    public PokemonsDisponiblesRecyclerviewAdapter getAdapter() {
         return adapter;
     }
 
-    /**
-     * Método llamado cuando la vista del fragmento está a punto de ser destruida.
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
