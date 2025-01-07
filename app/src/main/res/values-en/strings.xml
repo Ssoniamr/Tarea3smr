@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Task3smr</string>
-    <string name="eliminar_pokemon">Allow to delete Pokémon</string>
+    <string name="app_name">Tarea3smr</string>
+    <string name="eliminar_pokemon">Allow deleting Pokémon</string>
     <string name="elim_pokemon_title_opciones">Delete captured Pokémon</string>
     <string name="ajustes">Settings</string>
     <string name="idioma_titulo_ajustes">Language</string>
@@ -10,9 +9,9 @@
     <string name="pok_dex">Pokédex</string>
     <string name="ajuste_button_menu">Settings</string>
     <string name="cerrar_sesi_n">Log out</string>
-    <string name="cerrar_y_salir_de_la_aplicaci_n">close and exit the application</string>
-    <string name="no">no</string>
-    <string name="si">yes</string>
+    <string name="cerrar_y_salir_de_la_aplicaci_n">Log out and exit the application</string>
+    <string name="no">No</string>
+    <string name="si">Yes</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -24,12 +23,34 @@
     <string name="login_failed">"Login failed"</string>
     <string name="cerrar_sesion">Log out</string>
     <string name="acerca_de">About...</string>
-    <string name="infromacion_desarrollador">application developed by Sonia Muñoz Romero. Version 1.0</string>
-    <string name="elige_un_idioma">choose a language</string>
-    <string name="info_app">more information about the application</string>
+    <string name="infromacion_desarrollador">Application developed by Sonia Muñoz Romero. Version 1.0</string>
+    <string name="elige_un_idioma">Choose a language</string>
+    <string name="info_app">More information about the application</string>
     <string name="confirmar_cierre">Are you sure you want to log out?</string>
-    <string name="toastCierre">You have successfully logged out</string>
+    <string name="toastCierre">Session closed successfully</string>
     <string name="error_al_iniciar_sesi_n">Error logging in</string>
     <string name="bienvenido">"Welcome "</string>
-
+    <string name="imagen_del_pokemon">Image of the Pokémon</string>
+    <string name="nombre_pokemon">Pokémon name</string>
+    <string name="indice_del_pokemon">Pokémon index</string>
+    <string name="peso_del_pokemon">Pokémon weight</string>
+    <string name="altura_pokemon">Pokémon height</string>
+    <string name="tipo_o_tipos_del_pokemon">Type or types of the Pokémon</string>
+    <string name="has_seleccionado_a">"You have selected "</string>
+    <string name="nombre_pok_mon_capturado">Captured Pokémon name</string>
+    <string name="tipo_pok_mon_capturado">Captured Pokémon type</string>
+    <string name="error_al_obtener_la_lista_de_pok_mon">Error getting the Pokémon list</string>
+    <string name="error_en_la_respuesta_de_la_api">Error in the API response</string>
+    <string name="error_al_consultar_firebase">Error querying Firebase</string>
+    <string name="error_al_obtener_los_documentos_de_firebase">Error getting Firebase documents</string>
+    <string name="error_en_la_llamada_a_la_api">Error in the API call</string>
+    <string name="pok_mon">"Pokémon "</string>
+    <string name="eliminado_correctamente">" deleted successfully"</string>
+    <string name="error_al_eliminar_pok_mon">"Error deleting Pokémon "</string>
+    <string name="mensaje_de_activacion_switch">Pokémon deletion activated, you can delete Pokémon from the My Pokémon list</string>
+    <string name="mensaje_desactivacion_switch">Pokémon deletion deactivated, you CANNOT delete Pokémon from the My Pokémon list</string>
+    <string name="nombre_pok_mon_disponible">Available Pokémon name</string>
+    <string name="imagen_del_pokemon_capturado">Captured Pokémon image</string>
+    <string name="eliminar_pok_mon">Delete Pokémon</string>
+    <string name="este_pok_mon_ya_fue_capturado">This Pokémon has already been captured!</string>
 </resources>

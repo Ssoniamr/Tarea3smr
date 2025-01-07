@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -75,7 +76,8 @@ public class PokemonsDisponiblesRecyclerviewAdapter extends RecyclerView.Adapter
 
                     //deshabilitamos el clic y mostramos toast
                     holder.itemView.setOnClickListener(v -> {
-                        Toast.makeText(context, "¡Este Pokémon ya fue capturado!", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(holder.itemView, R.string.este_pok_mon_ya_fue_capturado, Snackbar.LENGTH_SHORT).show();
+
                     });
                 } else {
                     //sino existe lo ponemos en el color original.

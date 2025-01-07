@@ -52,4 +52,5 @@
     <string name="nombre_pok_mon_disponible">Nombre Pokémon disponible</string>
     <string name="imagen_del_pokemon_capturado">Imagen del pokemon capturado</string>
     <string name="eliminar_pok_mon">Eliminar Pokémon</string>
+    <string name="este_pok_mon_ya_fue_capturado">¡Este Pokémon ya fue capturado!</string>
 </resources>
