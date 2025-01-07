@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Margen inferior para salvar el navigationButtom-->
+    <style name="StyleMargenParaNB">
+        <item name="android:layout_marginBottom">80dp</item>
+    </style>
+
+    <!--estilo boton navigation-->
+    <style name="StyleNavigationButtton">
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconTint">@color/color_selector_bottom_nav</item>
+        <item name="android:background">@color/Azul_oscuro</item>
+        <item name="android:itemIconDisabledAlpha">@color/rojo</item>
+    </style>
+
+    <!--**********estilos lista pokemons capturados*********-->
+
     <!--estilo para el carView (dia)-->
     <style name="StyleCardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">18dp</item>
@@ -17,7 +33,7 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
 
-    <!--estilo texto del carView titulo(comun)-->
+    <!--estilo texto del carView titulo pkCapturados-->
     <style name="StyleTextCardView">
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:textSize">30sp</item>
@@ -32,6 +48,20 @@
         <item name="android:paddingStart">20dp</item>
     </style>
 
+    <!--**********estilos lista pokemons Disponibles*********-->
+
+    <!--estilo texto del carView pkDisponibles-->
+    <style name="StyleTextCardViewDisponible">
+        <item name="android:paddingStart">40dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:textColor">@color/Azul_oscuro</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/ketchum</item>
+    </style>
+
+    <!--**********estilos lista ventana detalles pokemons*********-->
+
     <!--estilo texto detalle-->
     <style name="StyleTextDetalle">
         <item name="android:textSize">25dp</item>
@@ -39,7 +69,7 @@
         <item name="android:paddingStart">120dp</item>
     </style>
 
-    <!--estilo texto detalle titulo(comun)-->
+    <!--estilo texto detalle titulo-->
     <style name="StyleTextDetalleTitulo">
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:paddingBottom">25dp</item>
@@ -48,6 +78,13 @@
         <item name="fontFamily">@font/ketchum</item>
     </style>
 
-
-
+    <!--estilo texto detalle titulo detalle Horizontal-->
+    <style name="StyleTextDetalleTituloDetalle">
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:paddingBottom">25dp</item>
+        <item name="android:paddingStart">60dp</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/ketchum</item>
+    </style>
 </resources>

@@ -21,7 +21,7 @@
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:src="@drawable/ic_launcher_background"
-            android:contentDescription="Imagen del pokemon capturado"
+            android:contentDescription="@string/imagen_del_pokemon_capturado"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:text="@string/nombre_pok_mon_capturado"
             app:layout_constraintBottom_toBottomOf="parent"
-
             app:layout_constraintStart_toEndOf="@id/imagen_pokemon_capturado"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3" />
@@ -51,12 +50,13 @@
             app:layout_constraintTop_toBottomOf="@id/nombre_pokemon_capturado"
             app:layout_constraintVertical_bias="0.26" />
 
+     <!--Boton que solo se mostrará si se habilita la opcion de eliminar pokemon-->
         <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/delete"
-            android:contentDescription="Eliminar Pokémon"
+            android:contentDescription="@string/eliminar_pok_mon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/nombre_pokemon_capturado"

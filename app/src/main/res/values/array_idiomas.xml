@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--opciones para idiomas-->
+    <!--opciones para idiomas en la ventana ajustes-->
     <string-array name="idiomas_disponibles">
         <item>Español</item>
         <item>Ingles</item>

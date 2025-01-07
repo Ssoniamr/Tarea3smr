@@ -6,14 +6,10 @@
     tools:context=".PokemonsDisponiblesCardView">
 
     <TextView
-        style="@style/StyleTextCardView"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:textSize="40sp"
-        android:textColor="@color/Azul_oscuro"
+        style="@style/StyleTextCardViewDisponible"
         android:id="@+id/nombre_pokemon_disponible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre Pokémon disponible" />
+        android:text="@string/nombre_pok_mon_disponible" />
 
 </FrameLayout>

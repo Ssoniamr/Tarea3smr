@@ -24,7 +24,7 @@
         android:key="elegir_idioma"
         android:title="@string/idioma_titulo_ajustes"
         app:allowDividerAbove="true"
-        app:dialogIcon="@drawable/flecha_derecha"
+        app:dialogIcon="@drawable/idioma"
         app:icon="@drawable/idioma"
         app:summary="@string/elige_un_idioma" />
 

@@ -18,28 +18,37 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
 
-import dam.pmdm.tarea3smr.databinding.ActivityLogingBinding;
 
 /**
  * LoginActivity gestiona el proceso de autenticación del usuario.
  */
 public class LoginActivity extends AppCompatActivity {
 
-    private ActivityLogingBinding binding;
-
     /**
-     * metodo que infla la activity LoginActivity.
-     * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     * metodo que se llama al crear la activity.
      *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityLogingBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
     }
+
+    /**
+     * Registra un lanzador para manejar el resultado del inicio de sesión
+     */
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    // Maneja el resultado del inicio de sesión
+                    onSignInResult(result);
+                }
+            }
+    );
 
     /**
      * metodo que comprueba si el usuario ya ha iniciado sesión.
@@ -76,18 +85,6 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         signInLauncher.launch(signInIntent);
     }
-
-    // Registra un lanzador para manejar el resultado del inicio de sesión
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    // Maneja el resultado del inicio de sesión
-                    onSignInResult(result);
-                }
-            }
-    );
 
     /**
      * Maneja el resultado del proceso de inicio de sesión.

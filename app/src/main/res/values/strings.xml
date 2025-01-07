@@ -49,4 +49,7 @@
     <string name="error_al_eliminar_pok_mon">"Error al eliminar Pokémon "</string>
     <string name="mensaje_de_activacion_switch">Eliminación de Pokémon activada, podrá eliminar pokémons desde la lista Mis Pokémons</string>
     <string name="mensaje_desactivacion_switch">Eliminación de Pokémon desactivada, NO podrá eliminar pokémons desde la lista Mis pokémons</string>
+    <string name="nombre_pok_mon_disponible">Nombre Pokémon disponible</string>
+    <string name="imagen_del_pokemon_capturado">Imagen del pokemon capturado</string>
+    <string name="eliminar_pok_mon">Eliminar Pokémon</string>
 </resources>

@@ -12,8 +12,6 @@
         <item name="colorOnSurface">@color/black</item>
         <item name="android:windowBackground">@color/Azul_claro2</item>
         <item name="android:windowFullscreen">false</item>
-
-
     </style>
 
     <style name="Theme.Tarea3smr" parent="Base.Theme.Tarea3smr" />
