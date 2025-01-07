@@ -76,7 +76,7 @@ En general, este proyecto me permitió profundizar en varias tecnologías actual
 ![Pantalla de ajustes](capturas/pantalla_ajustes.png)
 
 ### Pantalla de detalles del pokemon seleccionado
-![Pantalla de detalles del pokemon seleccionado](capturas/pantalla_detalles.png)
+![Pantalla de detalles del pokemon seleccionado](capturas/pantalla_detalles_pokemon.png)
 
 ### Ejemplo pantalla en modo noche y posición horizontal
 ![Pantalla en modo noche y posición horizontal](capturas/modo_noche_y_horizontal.png)
