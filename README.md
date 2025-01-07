@@ -66,3 +66,19 @@ En general, este proyecto me permitió profundizar en varias tecnologías actual
 ### Pantalla de Login
 ![Pantalla de Login](capturas/pantalla_login.png)
 
+### Pantalla de Pokedéx
+![Pantalla de Pokédex](capturas/lista_pokemons_capturados.png)
+
+### Pantalla de Pokemons disponibles
+![Pantalla de Pokemons disponibles](capturas/list_a_pokemons_disponibles.png)
+
+### Pantalla de ajustes
+![Pantalla de ajustes](capturas/pantalla_ajustes.png)
+
+### Pantalla de detalles del pokemon seleccionado
+![Pantalla de detalles del pokemon seleccionado](capturas/pantalla_detalles.png)
+
+### Ejemplo pantalla en modo noche y posición horizontal
+![Pantalla en modo noche y posición horizontal](capturas/modo_noche_y_horizontal.png)
+
+
