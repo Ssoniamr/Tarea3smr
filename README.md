@@ -63,4 +63,6 @@ En general, este proyecto me permitió profundizar en varias tecnologías actual
 
 ## Capturas de pantalla
 
+### Pantalla de Login
+![Pantalla de Login](capturas/pantalla_login.png)
 
