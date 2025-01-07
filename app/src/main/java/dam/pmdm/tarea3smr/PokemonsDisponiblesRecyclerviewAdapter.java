@@ -81,7 +81,7 @@ public class PokemonsDisponiblesRecyclerviewAdapter extends RecyclerView.Adapter
                     });
                 } else {
                     //sino existe lo ponemos en el color original.
-                    int disponible = ContextCompat.getColor(context, R.color.Azul_oscuro);
+                    int disponible = ContextCompat.getColor(context, R.color.pokemon_disponible);
                     holder.binding.nombrePokemonDisponible.setTextColor(disponible);
 
                     //volver habilitar clic original si el pokemon existe

@@ -10,6 +10,7 @@
     <color name="Azul_claro2">#9ACAEF</color>
     <color name="Azul_oscuro">#363b81</color>
     <color name="gris">#808080</color>
+    <color name="pokemon_disponible">#363b81</color>
 </resources>
 
 
