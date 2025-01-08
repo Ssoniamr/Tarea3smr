@@ -25,11 +25,11 @@ La aplicación utiliza Firebase para la autenticación y almacenamiento, y la AP
 
 ## Instrucciones de uso
 1. Clonar el repositorio:
-  - Abre Android Studio.
-  -  Ve a `File > New > Project from Version Control`.
-  -  En la opción "Version control", selecciona `Git`.
-  - Ingresa la URL del repositorio: `git clone https://github.com/Ssoniamr/Tarea3smr.git`.
-  - Haz clic en `Clone`.
+   - Abre Android Studio.
+   -  Ve a `File > New > Project from Version Control`.
+   -  En la opción "Version control", selecciona `Git`.
+   - Ingresa la URL del repositorio: `git clone https://github.com/Ssoniamr/Tarea3smr.git`.
+   - Haz clic en `Clone`.
     
 2. Abrir el proyecto en Android Studio.
 
@@ -40,7 +40,8 @@ La aplicación utiliza Firebase para la autenticación y almacenamiento, y la AP
 
  4.Instalar las dependencias necesarias:
     - Asegúrate de tener configuradas las dependencias en el archivo `build.gradle`:
-       ```gradle
+    
+       ``` gradle
        implementation 'com.google.firebase:firebase-bom:33.7.0'
        implementation 'com.google.firebase:firebase-firestore:25.1.1'
        implementation 'com.google.firebase:firebase-auth:23.1.0'
