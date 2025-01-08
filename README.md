@@ -61,9 +61,9 @@ La aplicación utiliza Firebase para la autenticación y almacenamiento, y la AP
 Desarrollar esta app ha sido todo un reto. Integrar Firebase para autenticación y almacenamiento, y utilizar Retrofit para consumir la API de Pokémon, no ha sido tan sencillo como esperaba.
 Aún hay funciones que no comprendo del todo, lo que hizo el proceso más complicado. Sin embargo, trabajar con tecnologías actualizadas como Firebase y Retrofit, en lugar de contenido desactualizado, ha sido muy gratificante. 
 
-En cuanto a el uso de RecyclerView, CardView o SharedPreferences ya las habia usado en la anterior app y definitivamente practicar, practicar y practicar son la clave, he notado gran diferencia a la hora de volverlas a aplicar en esta app, aunque por la gran modularidad que caracteriza a Android aún me hes complicado saber donde poner cada parte del código me ha sido mucho más sencillo implementarlo todo.
+En cuanto a el uso de RecyclerView, CardView o SharedPreferences ya las habia usado en la anterior app y definitivamente practicar, practicar y practicar son la clave, he notado gran diferencia a la hora de volverlas a aplicar en esta app, aunque por la gran modularidad que caracteriza a Android aún me hes complicado saber donde poner cada parte del código, me ha sido mucho más sencillo implementarlo todo.
 
-En general, este proyecto me permitió profundizar en varias tecnologías actuales como Retrofit o Firebase creando una app que, aunque sea muy basica, permite comprobar la aplicabilidad de la teoria en un entorno real
+En general, este proyecto me permitió profundizar en varias tecnologías actuales como Retrofit o Firebase creando una app que, aunque sea muy basica, permite comprobar la aplicabilidad de la teoria en un entorno real.
 
 ## Capturas de pantalla
 
