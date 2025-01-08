@@ -26,7 +26,7 @@ La aplicación utiliza Firebase para la autenticación y almacenamiento, y la AP
 ## Instrucciones de uso
 1. Clonar el repositorio:
     ```bash
-    git clone (https://github.com/Ssoniamr/Tarea3smr.git)
+    git clone https://github.com/Ssoniamr/Tarea3smr.git
     ```
 2. Abrir el proyecto en Android Studio.
 3. Configurar Firebase en tu proyecto:
