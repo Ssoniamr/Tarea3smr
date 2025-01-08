@@ -38,8 +38,7 @@ La aplicación utiliza Firebase para la autenticación y almacenamiento, y la AP
     - Registrar la aplicación en Firebase y agregar el archivo `google-services.json` en el directorio `app`.
     - Habilitar Firebase Authentication y Firestore en Firebase Console.
 
- 4.Instalar las dependencias necesarias:
-    - Asegúrate de tener configuradas las dependencias en el archivo `build.gradle`:
+ 4.Instalar las dependencias necesarias en el archivo `build.gradle`:
     
        ``` gradle
        implementation 'com.google.firebase:firebase-bom:33.7.0'
